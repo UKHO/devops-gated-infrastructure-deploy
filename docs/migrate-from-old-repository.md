@@ -13,7 +13,7 @@ Resource block:
    type: github
    endpoint: "UKHO" 
    name: UKHO/devops-gated-infrastructure-deploy
-   ref: refs/tags/v1.0
+   ref: refs/tags/1.0.0
 ```
 
 ## Update template reference
