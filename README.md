@@ -1,2 +1,12 @@
-# devops-gated-infrastructure-deploy
-AzDO Pipeline Template wrapping terraform apply and plan with a manual verification step if there are any resources to be destroyed.
+# Template for Gated Infrastructure Deploy
+
+TL;DR: AzDO Pipeline Template wrapping terraform apply and plan with a manual verification step, aka gate, to give a chance to check resources to be destroyed are expected.
+
+> [!WARNING]
+> The terraform plan cannot foresee every possible circumstance and scenario when determining changes to the infrastructure, only the terraform apply will truly know what changes will be made. Always test in an development environment first before moving to production.
+
+For more information on how this template works, read [how does this template work](docs/how-does-this-template-work.md).
+
+For a guide on how to implementing into a pipeline for the first time, see [first time implementation guide](docs/first-time-implementation-guide.md).
+
+For an example of template implementation in pipeline, see this [example](examples/pipeline.yml).
