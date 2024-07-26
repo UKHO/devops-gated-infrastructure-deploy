@@ -30,7 +30,7 @@ Coming soon...
       displayName: "Deploy"
       dependsOn: Build
       jobs:
-        - template: devops-gated-infrastructure-deploy/template.yml@GatedInfrastructureDeploy
+        - template: template.yml@GatedInfrastructureDeploy
           parameters:
             AzDOEnvironmentName: "string"
             TFStateResourceGroupName: "string"

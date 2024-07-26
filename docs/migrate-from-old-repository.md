@@ -18,7 +18,7 @@ Resource block:
 
 ## Update template reference
 
-The old reference to the template is too verbose and can instead be updated to be: `devops-gated-infrastructure-deploy/template.yml@GatedInfrastructureDeploy`.
+The old reference to the template is too verbose and can instead be updated to be: `template.yml@GatedInfrastructureDeploy`.
 
 ## Upgrade as needed
 
