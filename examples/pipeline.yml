@@ -1,0 +1,48 @@
+﻿resources:
+  repositories:
+    - repository: GatedInfrastructureDeploy
+      type: github
+      endpoint: UKHO
+      name: UKHO/devops-gated-infrastructure-deploy
+      ref: refs/tags/v1.0
+  containers:
+    - container: TerraformContainer
+      image: ukhydrographicoffice/terraform-powershell:1.8.5
+
+stages:
+  - stage: Build
+    displayName: "Build"
+    jobs:
+      - job: PublishTerraformArtifact
+        workspace:
+          clean: all
+        displayName: "Publish Terraform Artifact"
+        steps:
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Terraform Artifact"
+            inputs:
+              targetPath: '$(Build.SourcesDirectory)/' # Path to terraform files
+              artifact: TerraformArtifact
+              publishLocation: "pipeline"
+
+  - stage: Deploy
+    displayName: "Deploy"
+    dependsOn: Build
+    jobs:
+      - template: devops-gated-infrastructure-deploy/template.yml@GatedInfrastructureDeploy
+        parameters:
+          AzDOEnvironmentName: "example"
+          TFStateResourceGroupName: "tfstate-rg"
+          TFStateStorageAccountName: "tfstatesa"
+          TFStateContainerName: "tfstate"
+          TFStateBlobName: "tfstate.dev.service"
+          TerraformWorkspace: dev
+          TerraformArtifactConfigRelativePath: "/"
+          TerraformArtifact: "TerraformArtifact"
+          TerraformContainer: TerraformContainer
+          VariablesTemplateRelativePath: /pipeline/infrastructure-pipeline/vars-dev-deploy.yml
+          TerraformVariableMappings:
+            ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
+            ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
+            ARM_TENANT_ID: $(TERRAFORM-TENANT-ID)
+            ARM_SUBSCRIPTION_ID: $(TERRAFORM-SUBSCRIPTION-ID)
