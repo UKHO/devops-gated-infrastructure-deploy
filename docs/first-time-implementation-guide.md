@@ -20,7 +20,7 @@ Coming soon...
           type: github
           endpoint: UKHO
           name: UKHO/devops-gated-infrastructure-deploy
-          ref: refs/tags/v1.0
+          ref: refs/tags/1.0.0
     ```
 
 2. Add this template block to your pipeline and fill out the values that relate to your deployment. The template content is a series of `jobs`, therefore they need to be rooted under a `stage`.
