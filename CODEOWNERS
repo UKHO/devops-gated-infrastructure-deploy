@@ -1,5 +1,3 @@
-﻿# Code Owners are two teams plus author
-# DDC for ownership of all devops templates
+﻿# DDC for ownership of all devops templates
 # Calypso for original team of this template
-# srjames as author and maintainer of this template
-* @UKHO/Calypso @UKHO/digital-delivery-capability @srjames-ukho
+* @UKHO/Calypso @UKHO/digital-delivery-capability
