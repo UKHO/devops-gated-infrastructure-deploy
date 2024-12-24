@@ -15,8 +15,9 @@
     type: string
   - name: TerraformArtifact
     type: string
-  - name: VariablesTemplateRelativePath
-    type: string
+  - name: JobsVariableMappings
+    type: object
+    default: { }
   - name: TerraformVariableMappings
     type: object
   - name: TerraformOutputVariables
@@ -33,7 +34,8 @@ jobs:
     workspace:
       clean: all
     variables:
-      - template: ${{variables['System.DefaultWorkingDirectory']}}${{parameters.VariablesTemplateRelativePath}}@self
+      ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
+        ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
     environment: "${{parameters.AzDOEnvironmentName}}"
     strategy:
       runOnce:
@@ -89,7 +91,8 @@ jobs:
     workspace:
       clean: all
     variables:
-      - template: ${{variables['System.DefaultWorkingDirectory']}}${{parameters.VariablesTemplateRelativePath}}@self
+      ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
+        ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
     strategy:
       runOnce:
         deploy:
