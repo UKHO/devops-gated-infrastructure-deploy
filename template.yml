@@ -35,7 +35,7 @@ jobs:
       clean: all
     variables:
       ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
-        ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
+        - ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
     environment: "${{parameters.AzDOEnvironmentName}}"
     strategy:
       runOnce:
@@ -92,7 +92,7 @@ jobs:
       clean: all
     variables:
       ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
-        ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
+        - ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
     strategy:
       runOnce:
         deploy:
