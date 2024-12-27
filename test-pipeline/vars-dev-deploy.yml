@@ -1,2 +1,2 @@
 variables:
-  fromTemplateVariables: true
+  fromDevDeployTemplateVariables: true

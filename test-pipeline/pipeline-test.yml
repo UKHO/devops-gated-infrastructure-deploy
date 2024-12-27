@@ -42,7 +42,11 @@ stages:
           TerraformContainer: TerraformContainer
           JobsVariableMappings:
             group: ProjectVariableGroupThatDoesntActuallyExistYet
+            group: AnotherProjectVariableGroupThatDoesntActuallyExistYet
+            aVariableName: aVariableValue
+            anotherVariableName: anotherVariableValue
             template: ${{variables['System.DefaultWorkingDirectory']}}/test-pipeline/vars-dev-deploy.yml@self
+            template: ${{variables['System.DefaultWorkingDirectory']}}/test-pipeline/vars-shared-deploy.yml@self
           TerraformVariableMappings:
             ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
             ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
