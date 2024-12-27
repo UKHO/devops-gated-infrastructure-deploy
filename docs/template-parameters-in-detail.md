@@ -56,8 +56,10 @@ Example 2: The artifact is named 'buildartifact' and the .tf files are in a subf
 To give the jobs inside the template the full range of variables they need, this parameter can be set to be different types of variables:
 
 - Name: A singular variable which is in the form of KEY/VALUE pair. An example would be: `environment: dev` which will be accessible as `$(environment)`.
-- Template: A path to a yaml template specifying a variables block, this allows the template to pull in all the variables from the template. In order to use the template path, the full path will be required in this format:`${{variables['System.DefaultWorkingDirectory']}}/build/pipeline/templates/var/dev-deploy@self`. Both the prefix of `${{variables['System.DefaultWorkingDirectory']}}` and suffix `@self` are required to find the correct repository of code, while the middle portion must be from the repository root directory to the variables template file. An example would be: `template: ${{variables['variables['System.DefaultWorkingDirectory']}}/build/pipeline/templates/var/dev-deploy.yml@self` which the variables content would be accessible via `$(VARIABLE)`.
+- Template: A path to a yaml template specifying a variables block, this allows the template to pull in all the variables from the template. In order to use the template path, the full path will be required in this format:`${{variables['System.DefaultWorkingDirectory']}}/pipeline/infrastructure-pipeline/vars-dev-deploy.yml@self`. Both the prefix of `${{variables['System.DefaultWorkingDirectory']}}` and suffix `@self` are required to find the correct repository of code, while the middle portion must be from the repository root directory to the variables template file. An example would be: `template: ${{variables['variables['System.DefaultWorkingDirectory']}}/pipeline/infrastructure-pipeline/vars-dev-deploy.yml@self` which the variables content would be accessible via `$(VARIABLE)`.
 - Group: A name of a variable group defined in Azure DevOps which contains KEY/VALUE pairs. An example would be: `group: SSO-Dev` which the variables content would be accessible via `$(VARIABLE)`.
+
+See [AzDO YAML Pipeline: Variable Definition](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/variables?view=azure-pipelines) for additional information.
 
 ## TerraformVariableMappings
 

@@ -7,7 +7,7 @@ Removal of Variables Template dependency.
 - Removed parameter for VariablesTemplateRelativePath (@srjames-ukho)
 - Added parameter for JobsVariablesMappings (@srjames-ukho)
 - Added expression for iterating over new parameter to add variables to jobs (@srjames-ukho)
-- Added relevant documentation regarding new JobsVariableMappings feature (@srjames-ukho)
+- Added relevant documentation regarding new JobsVariableMappings feature and upgrading through major breaking change (@srjames-ukho)
 - Refactored documentation for ease of future updates (@srjames-ukho)
 
 ## [1.0.0] - 2024-07-26
