@@ -20,6 +20,7 @@
     default: { }
   - name: TerraformVariableMappings
     type: object
+    default: { }
   - name: TerraformOutputVariables
     type: object
     default: { }
