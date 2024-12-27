@@ -2,19 +2,19 @@
 
 Consult the table below for information regarding the parameters. Hyperlinks lead to more detailed sections for specific parameters.
 
-| parameter                                                                   | Required | Type   | Description                                                                                                        | 
-|-----------------------------------------------------------------------------|----------|--------|--------------------------------------------------------------------------------------------------------------------| 
-| AzDOEnvironmentName                                                         | Yes      | string | Environment name as defined in Azure DevOps                                                                        |
-| TFStateResourceGroupName                                                    | Yes      | string | Terraform state resource group                                                                                     |
-| TFStateStorageAccountName                                                   | Yes      | string | Terraform state storage account                                                                                    |
-| TFStateContainerName                                                        | Yes      | string | Terraform state container                                                                                          |
-| TFStateBlobName                                                             | Yes      | string | Terraform state blob                                                                                               |
-| [TerraformWorkspace](#TerraformWorkspace)                                   | Yes      | string | Terraform workspace                                                                                                |
-| [TerraformArtifact](#TerraformArtifact)                                     | Yes      | string | Artifact containing your .tf files and any other supporting files for your deployment                              |
-| [TerraformArtifactConfigRelativePath](#TerraformArtifactConfigRelativePath) | Yes      | string | Relative path to the .tf files inside your artifact                                                                |
-| [JobsVariableMappings](#JobsVariableMappings)                               | Yes      | string | Relative path to a YAML template containing a variables expression                                                 |
-| [TerraformVariableMappings](#TerraformVariableMappings)                     | Yes      | object | A key/value map of Terraform variables to be injected into the PowerShell runtime environment for Terraform to use |
-| [TerraformOutputVariables](#TerraformOutputVariables)                       | No       | object | An array of Terraform output variables to be retrieved after the Terraform apply has completed                     |
+| parameter                                                                   | Required | Type   | Description                                                                                                                                                     | 
+|-----------------------------------------------------------------------------|----------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| AzDOEnvironmentName                                                         | Yes      | string | Environment name as defined in Azure DevOps                                                                                                                     |
+| TFStateResourceGroupName                                                    | Yes      | string | Terraform state resource group                                                                                                                                  |
+| TFStateStorageAccountName                                                   | Yes      | string | Terraform state storage account                                                                                                                                 |
+| TFStateContainerName                                                        | Yes      | string | Terraform state container                                                                                                                                       |
+| TFStateBlobName                                                             | Yes      | string | Terraform state blob                                                                                                                                            |
+| [TerraformWorkspace](#TerraformWorkspace)                                   | Yes      | string | Terraform workspace                                                                                                                                             |
+| [TerraformArtifact](#TerraformArtifact)                                     | Yes      | string | Artifact containing your .tf files and any other supporting files for your deployment                                                                           |
+| [TerraformArtifactConfigRelativePath](#TerraformArtifactConfigRelativePath) | Yes      | string | Relative path to the .tf files inside your artifact                                                                                                             |
+| [JobsVariableMappings](#JobsVariableMappings)                               | No       | object | A key/value map of variables to be added to the templates jobs. Each key/value pair can either be: a normal variable, a variable group, or a variable template. |
+| [TerraformVariableMappings](#TerraformVariableMappings)                     | Yes      | object | A key/value map of Terraform variables to be injected into the PowerShell runtime environment for Terraform to use                                              |
+| [TerraformOutputVariables](#TerraformOutputVariables)                       | No       | object | An array of Terraform output variables to be retrieved after the Terraform apply has completed                                                                  |
 
 Parameters in detail:
 
