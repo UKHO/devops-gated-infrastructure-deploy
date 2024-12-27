@@ -15,43 +15,43 @@ Coming soon...
 
 Reference this repository in your root `azure-pipelines.yml` file.
 
-    ```yaml
-    resources:
-      repositories:
-        - repository: GatedInfrastructureDeploy
-          type: github
-          endpoint: UKHO
-          name: UKHO/devops-gated-infrastructure-deploy
-          ref: refs/tags/1.0.0
-    ```
+```yaml
+resources:
+  repositories:
+    - repository: GatedInfrastructureDeploy
+      type: github
+      endpoint: UKHO
+      name: UKHO/devops-gated-infrastructure-deploy
+      ref: refs/tags/1.0.0
+```
 
 ### Add Template Block
 
 Add this template block to your pipeline and fill out the values that relate to your deployment. The template content is a series of `jobs`, therefore they need to be rooted under a `stage`.
 
-    ```yaml
-    - stage: Deploy
-      displayName: "Deploy"
-      dependsOn: Build
-      jobs:
-        - template: template.yml@GatedInfrastructureDeploy
-          parameters:
-            AzDOEnvironmentName: "string"
-            TFStateResourceGroupName: "string"
-            TFStateStorageAccountName: "string"
-            TFStateContainerName: "string"
-            TFStateBlobName: "string"
-            TerraformWorkspace: "string"
-            TerraformArtifactConfigRelativePath: "string"
-            TerraformArtifact: "string"
-            VariablesTemplateRelativePath: "string"
-            TerraformVariableMappings:
-              TERRAFORM_VARIABLE: "VALUE" 
-            TerraformOutputVariables: # optional
-              POSSIBLE_TERRAFORM_OUTPUT_VARIABLE
+```yaml
+- stage: Deploy
+  displayName: "Deploy"
+  dependsOn: Build
+  jobs:
+    - template: template.yml@GatedInfrastructureDeploy
+      parameters:
+        AzDOEnvironmentName: "string"
+        TFStateResourceGroupName: "string"
+        TFStateStorageAccountName: "string"
+        TFStateContainerName: "string"
+        TFStateBlobName: "string"
+        TerraformWorkspace: "string"
+        TerraformArtifactConfigRelativePath: "string"
+        TerraformArtifact: "string"
+        VariablesTemplateRelativePath: "string"
+        TerraformVariableMappings:
+          TERRAFORM_VARIABLE: "VALUE" 
+        TerraformOutputVariables: # optional
+          POSSIBLE_TERRAFORM_OUTPUT_VARIABLE
 
-        - job: Deploy Web App
-    ```
+    - job: Deploy Web App
+```
 
 ### Configure Parameters
 
