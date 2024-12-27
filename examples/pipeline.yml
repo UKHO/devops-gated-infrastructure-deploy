@@ -40,7 +40,9 @@ stages:
           TerraformArtifactConfigRelativePath: "/"
           TerraformArtifact: "TerraformArtifact"
           TerraformContainer: TerraformContainer
-          VariablesTemplateRelativePath: /pipeline/infrastructure-pipeline/vars-dev-deploy.yml
+          JobsVariableMappings: 
+            group: ProjectVariableGroupName
+            exampleVariable: "valueOfVariable"
           TerraformVariableMappings:
             ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
             ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
