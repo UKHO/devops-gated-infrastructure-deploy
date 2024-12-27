@@ -44,7 +44,10 @@ Add this template block to your pipeline and fill out the values that relate to 
         TerraformWorkspace: "string"
         TerraformArtifactConfigRelativePath: "string"
         TerraformArtifact: "string"
-        VariablesTemplateRelativePath: "string"
+        JobsVariableMappings:
+          name: variableValue
+          group: variableGroupName
+          template: absolute/path/to/variables-template.yml
         TerraformVariableMappings:
           TERRAFORM_VARIABLE: "VALUE" 
         TerraformOutputVariables: # optional
@@ -67,7 +70,7 @@ Consult the table below to fill out each of the parameters with the value that y
 | [TerraformWorkspace](#TerraformWorkspace)                                   | Yes      | string | Terraform workspace                                                                                                |
 | [TerraformArtifact](#TerraformArtifact)                                     | Yes      | string | Artifact containing your .tf files and any other supporting files for your deployment                              |
 | [TerraformArtifactConfigRelativePath](#TerraformArtifactConfigRelativePath) | Yes      | string | Relative path to the .tf files inside your artifact                                                                |
-| [VariablesTemplateRelativePath](#VariablesTemplateRelativePath)             | Yes      | string | Relative path to a YAML template containing a variables expression                                                 |
+| [JobsVariableMappings](#JobsVariableMappings)                               | Yes      | string | Relative path to a YAML template containing a variables expression                                                 |
 | [TerraformVariableMappings](#TerraformVariableMappings)                     | Yes      | object | A key/value map of Terraform variables to be injected into the PowerShell runtime environment for Terraform to use |
 | [TerraformOutputVariables](#TerraformOutputVariables)                       | No       | object | An array of Terraform output variables to be retrieved after the Terraform apply has completed                     |
 
@@ -106,24 +109,13 @@ Example 2: The artifact is named 'buildartifact' and the .tf files are in a subf
 |   +-- output.tf
 ```
 
-#### VariablesTemplateRelativePath
+#### JobsVariableMappings
 
-Inside the template, the full path to the variable template will be `${{variables['System.DefaultWorkingDirectory']}}${{ parameters.VariablesTemplateRelativePath }}@self`. This allows the template to pull in all the variables it needs for the deployment. The relative path must be from the repository root directory.
+To give the jobs inside the template the full range of variables they need, this parameter can be set to be different types of variables:
 
-Example: In the repository acg-connect, the following (simplified) folder structure exists. `VariablesTemplateRelativePath` would be `/build/pipeline/templates/var/dev-deploy.yml`.
-
-```
-+-- build
-|   +-- pipeline
-|       +-- templates
-|           +-- var
-|               +-- dev-deploy.yml
-|           +-- continuous-deployment.yml
-|       +-- azure-pipelines.yml
-|   +-- terraform
-+-- documentation
-+-- src
-```
+- Name: A singular variable which is in the form of KEY/VALUE pair. An example would be: `environment: dev` which will be accessible as `$(environment)`.
+- Template: A path to a yaml template specifying a variables block, this allows the template to pull in all the variables from the template. In order to use the template path, the full path will be required in this format:`${{variables['System.DefaultWorkingDirectory']}}/build/pipeline/templates/var/dev-deploy@self`. Both the prefix of `${{variables['System.DefaultWorkingDirectory']}}` and suffix `@self` are required to find the correct repository of code, while the middle portion must be from the repository root directory to the variables template file. An example would be: `template: ${{variables['variables['System.DefaultWorkingDirectory']}}/build/pipeline/templates/var/dev-deploy.yml@self` which the variables content would be accessible via `$(VARIABLE)`.  
+- Group: A name of a variable group defined in Azure DevOps which contains KEY/VALUE pairs. An example would be: `group: SSO-Dev` which the variables content would be accessible via `$(VARIABLE)`.
 
 #### TerraformVariableMappings
 
