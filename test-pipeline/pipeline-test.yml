@@ -1,4 +1,10 @@
 resources:
+  repositories:
+    - repository: GatedInfrastructureDeploy
+      type: github
+      endpoint: sentonnes
+      name: sentonnes/devops-gated-infrastructure-deploy
+      ref: refs/heads/feature/replace-variablesTemplateRelativePath
   containers:
     - container: TerraformContainer
       image: ukhydrographicoffice/terraform-powershell:1.8.5
