@@ -1,3 +1,6 @@
+# NOT VALID TO RUN
+# FOR COMPILING ONLY
+
 resources:
   repositories:
     - repository: GatedInfrastructureDeploy
@@ -29,7 +32,7 @@ stages:
     displayName: "Deploy"
     dependsOn: Build
     jobs:
-      - template: ..\template.yml
+      - template: template.yml@GatedInfrastructureDeploy
         parameters:
           AzDOEnvironmentName: "dev"
           TFStateResourceGroupName: "tfstate-rg"
