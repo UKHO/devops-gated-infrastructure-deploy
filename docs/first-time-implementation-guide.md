@@ -3,7 +3,7 @@
 To use the template you'll need to make two sets of changes:
 
 - [Update the AzDO project](#update-the-azdo-project) with a service connection to this GitHub repository
-- [Update the pipeline](#update-the-pipeline) with the the resource reference to the repository and add the template with parameters.
+- [Update the pipeline](#update-the-pipeline) with the resource reference to the repository and add the template with parameters.
 
 ## Update the AzDO project
 
