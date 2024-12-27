@@ -43,7 +43,7 @@ stages:
           JobsVariableMappings:
             group: ProjectVariableGroupThatDoesntActuallyExistYet
             fromTheMainFile: true
-            template: variables['System.DefaultWorkingDirectory']/test-pipeline/vars-dev-deploy.yml@self
+            template: ${{variables['System.DefaultWorkingDirectory']}}/test-pipeline/vars-dev-deploy.yml@self
           TerraformVariableMappings:
             ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
             ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
