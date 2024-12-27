@@ -42,7 +42,6 @@ stages:
           TerraformContainer: TerraformContainer
           JobsVariableMappings:
             group: ProjectVariableGroupThatDoesntActuallyExistYet
-            fromTheMainFile: true
             template: ${{variables['System.DefaultWorkingDirectory']}}/test-pipeline/vars-dev-deploy.yml@self
           TerraformVariableMappings:
             ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
