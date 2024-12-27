@@ -1,10 +1,4 @@
 resources:
-  repositories:
-    - repository: GatedInfrastructureDeploy
-      type: github
-      endpoint: UKHO
-      name: UKHO/devops-gated-infrastructure-deploy
-      ref: refs/tags/1.0.0
   containers:
     - container: TerraformContainer
       image: ukhydrographicoffice/terraform-powershell:1.8.5
@@ -29,7 +23,7 @@ stages:
     displayName: "Deploy"
     dependsOn: Build
     jobs:
-      - template: template.yml@GatedInfrastructureDeploy
+      - template: ..\template.yml
         parameters:
           AzDOEnvironmentName: "dev"
           TFStateResourceGroupName: "tfstate-rg"
@@ -41,8 +35,9 @@ stages:
           TerraformArtifact: "TerraformArtifact"
           TerraformContainer: TerraformContainer
           JobsVariableMappings:
-            group: ProjectVariableGroupName
-            exampleVariable: "valueOfVariable"
+            group: ProjectVariableGroupThatDoesntActuallyExistYet
+            fromTheMainFile: true
+            template: ${{variables['System.DefaultWorkingDirectory']}}/test-pipeline/vars-dev-deploy.yml@self
           TerraformVariableMappings:
             ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
             ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
