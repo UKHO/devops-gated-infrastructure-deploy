@@ -11,4 +11,4 @@ For a guide on how to implementing into a pipeline for the first time, see [firs
 
 For a guide on how to migrate from the old repository to using this template, see [migrate from old repository](docs/migrate-from-old-repository.md).
 
-For an example of template implementation in pipeline, see this [example](examples/pipeline.yml).
+For an example of template implementation in pipeline, see this [example](examples/pipeline-latest-version.yml).
