@@ -1,10 +1,13 @@
+# NOT VALID TO RUN
+# FOR COMPILING ONLY
+
 resources:
   repositories:
     - repository: GatedInfrastructureDeploy
       type: github
-      endpoint: UKHO
-      name: UKHO/devops-gated-infrastructure-deploy
-      ref: refs/tags/1.0.0
+      endpoint: sentonnes
+      name: sentonnes/devops-gated-infrastructure-deploy
+      ref: refs/heads/feature/replace-variablesTemplateRelativePath
   containers:
     - container: TerraformContainer
       image: ukhydrographicoffice/terraform-powershell:1.8.5
@@ -41,8 +44,10 @@ stages:
           TerraformArtifact: "TerraformArtifact"
           TerraformContainer: TerraformContainer
           JobsVariableMappings:
-            group: ProjectVariableGroupName
-            exampleVariable: "valueOfVariable"
+            group: AProjectVariableGroupThatDoesntActuallyExistYet
+            aVariableName: aVariableValue
+            anotherVariableName: anotherVariableValue
+            template: ${{variables['System.DefaultWorkingDirectory']}}/test-pipeline/vars-dev-deploy.yml@self
           TerraformVariableMappings:
             ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
             ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)

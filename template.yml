@@ -20,6 +20,7 @@
     default: { }
   - name: TerraformVariableMappings
     type: object
+    default: { }
   - name: TerraformOutputVariables
     type: object
     default: { }
@@ -34,8 +35,12 @@ jobs:
     workspace:
       clean: all
     variables:
-      ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
-        ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
+      - ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
+          - ${{ if or(eq(JobsVariableMapping.Key, 'group'), eq(JobsVariableMapping.Key, 'template')) }}:
+              - ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
+          - ${{ else }}:
+              - name: ${{ JobsVariableMapping.Key }}
+                value: ${{ JobsVariableMapping.Value }}
     environment: "${{parameters.AzDOEnvironmentName}}"
     strategy:
       runOnce:
@@ -91,8 +96,12 @@ jobs:
     workspace:
       clean: all
     variables:
-      ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
-        ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
+      - ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
+          - ${{ if or(eq(JobsVariableMapping.Key, 'group'), eq(JobsVariableMapping.Key, 'template')) }}:
+              - ${{ JobsVariableMapping.Key }}: ${{ JobsVariableMapping.Value }}
+          - ${{ else }}:
+              - name: ${{ JobsVariableMapping.Key }}
+                value: ${{ JobsVariableMapping.Value }}
     strategy:
       runOnce:
         deploy:
