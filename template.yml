@@ -34,6 +34,9 @@ jobs:
     container: ${{parameters.TerraformContainer}}
     workspace:
       clean: all
+    # In order for normal variables to co-exist with either/both group & template, they must be broken down into a - name: & value: pattern
+    # If done in the KEY/VALUE pairing then the group & template would be considered to be a name of a variable oppose to a variables template file or a variable group in AzDO
+    # https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/variables?view=azure-pipelines#examples-1
     variables:
       - ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
           - ${{ if or(eq(JobsVariableMapping.Key, 'group'), eq(JobsVariableMapping.Key, 'template')) }}:
@@ -95,6 +98,9 @@ jobs:
     environment: "${{parameters.AzDOEnvironmentName}}"
     workspace:
       clean: all
+    # In order for normal variables to co-exist with either/both group & template, they must be broken down into a - name: & value: pattern
+    # If done in the KEY/VALUE pairing then the group & template would be considered to be a name of a variable oppose to a variables template file or a variable group in AzDO
+    # https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/variables?view=azure-pipelines#examples-1
     variables:
       - ${{ each JobsVariableMapping in parameters.JobsVariableMappings }}:
           - ${{ if or(eq(JobsVariableMapping.Key, 'group'), eq(JobsVariableMapping.Key, 'template')) }}:
