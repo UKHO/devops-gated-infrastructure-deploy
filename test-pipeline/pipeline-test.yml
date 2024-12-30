@@ -24,7 +24,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: "Publish Terraform Artifact"
             inputs:
-              targetPath: '$(Build.SourcesDirectory)/terraform' # Path to terraform files
+              targetPath: '$(Build.SourcesDirectory)/terraformTestDirectory' # Path to terraform files
               artifact: TerraformArtifact
               publishLocation: "pipeline"
 
