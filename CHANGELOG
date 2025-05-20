@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## [2.0.1] - 2025-05-20
+
+Minor improvements for error handling.
+
+- Includeed `succeeded()` condition to `manualVerification` job (@ru-ukho)
+- Introduced `failOnStderr: true` for stricter error handling in terraform plan and apply (@ru-ukho)
+
 ## [2.0.0] - 2024-12-27
 
 Removal of Variables Template dependency.
