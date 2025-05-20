@@ -21,7 +21,7 @@ Becomes
         parameters:
           #...
           JobsVariableMappings:
-            template: ${{variables['variables['System.DefaultWorkingDirectory']}}/pipeline/infrastructure-pipeline/vars-dev-deploy.yml@self
+            template: ${{ variables['System.DefaultWorkingDirectory'] }}/pipeline/infrastructure-pipeline-template/vars-dev-deploy.yml@self
           #...
 ```
 
