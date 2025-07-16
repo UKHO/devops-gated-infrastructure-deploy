@@ -8,10 +8,6 @@ param (
         })]
     [string] $TerraformFilesDirectory,
 
-
-    [Parameter]
-    [string[]] $TFVarFiles,
-
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string] $TFStateResourceGroupName,
@@ -30,7 +26,9 @@ param (
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $Workspace
+    [string] $Workspace,
+
+    [string[]] $TFVarFiles
 )
 
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")
