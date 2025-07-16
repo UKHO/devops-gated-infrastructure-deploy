@@ -38,4 +38,4 @@ Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStora
 if($Workspace) { Terraform-Workspace -Workspace $Workspace }
 Terraform-Validate
 Terraform-Plan -TerraformOutputFileName $terraformOutputFileName -TFVarFiles $TFVarFiles
-SetNeedsVerificationIfTerraformPlanWillDestroyResources -TerraformOutputFileName $terraformOutputFileName
+CheckTerraformPlanForChanges -TerraformOutputFileName $terraformOutputFileName

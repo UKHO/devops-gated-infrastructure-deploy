@@ -156,7 +156,7 @@ function ExportRequiredTerraformOutputVariables {
   }
 }
 
-function SetNeedsVerificationIfTerraformPlanWillDestroyResources {
+function CheckTerraformPlanForChanges {
   [CmdletBinding()]
   param (
     [Parameter(Mandatory)]
@@ -169,13 +169,11 @@ function SetNeedsVerificationIfTerraformPlanWillDestroyResources {
     Get-ChildItem -File | ForEach-Object { Write-Host $_ }
   }
   else {
-    $numberOfOccurancesToIndicateDeletionOfResources = 2
-    $totalDestroyLines = (Get-Content -Path $TerraformOutputFileName |
-      Select-String -Pattern "destroy" -CaseSensitive |
-      Where-Object { $_ -ne "" }).length
+    $terraformOutputFile = Get-Content -Path $TerraformOutputFileName
 
-    if ($totalDestroyLines -ge $numberOfOccurancesToIndicateDeletionOfResources) {
-      Write-Host "Terraform plan indicates resources will be destroyed, please verify..."
+    if( $terraformOutputFile -notmatch "no changes" )
+    {
+      Write-Host "Terraform plan indicates resources will be add, removed or changed, please verify..."
       Write-Host "##vso[task.setvariable variable=needsVerification;isoutput=true]true"
     }
   }
