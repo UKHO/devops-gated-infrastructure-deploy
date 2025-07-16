@@ -89,7 +89,7 @@ function Terraform-Plan {
   param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $TerraformOutputFileName
+    [string] $TerraformOutputFileName,
 
     [string[]] $TFVarFiles
   )
