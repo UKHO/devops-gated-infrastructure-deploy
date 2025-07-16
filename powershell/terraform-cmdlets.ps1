@@ -113,10 +113,17 @@ function Terraform-Plan {
 }
 
 function Terraform-Apply {
+  [CmdletBinding()]
+  param (
+    [string[]] $TFVarFiles
+  )
+
   $activity = "terraform apply command execution"
   Write-Output "Starting $activity"
 
-  terraform apply -auto-approve
+  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
+
+  Invoke-Expression "terraform apply -auto-approve $TFVarFileArgs"
 
   ThrowErrorIfCommandHadError -Activity $activity
   Write-Output "Finished $activity"

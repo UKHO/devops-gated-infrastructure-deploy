@@ -140,6 +140,7 @@ jobs:
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
                   -Workspace ${{lower(parameters.TerraformWorkspace)}}
                   -TerraformOutputVariables ${{convertToJson(parameters.TerraformOutputVariables)}}
+                  -TFVarFiles ${{parameters.TFVarFiles}}
                 failOnStderr: true
               env:
                 ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
