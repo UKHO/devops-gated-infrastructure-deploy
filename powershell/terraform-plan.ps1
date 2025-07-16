@@ -35,11 +35,15 @@ param (
 
 $terraformOutputFileName = "terraform_output.txt"
 
+$TFVarFileArgs = ''
+
 foreach ($TFVarFile in $TFVarFiles)
 {
-    Write-Host "--------------------"
-    Write-Host "$TFVarFile"
+
+    TFVarFileArgs += "-var-file=""$TFVarFile"""
 }
+
+Write-Host "$TFVarFileArgs"
 
 SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
