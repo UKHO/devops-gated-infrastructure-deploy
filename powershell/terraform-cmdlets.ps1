@@ -90,12 +90,24 @@ function Terraform-Plan {
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string] $TerraformOutputFileName
+
+    [string[]] $TFVarFiles
   )
 
   $activity = "terraform plan command execution"
   Write-Output "Starting $activity"
 
   $planName = "tfplan"
+
+  $tfVarFileArgs = ''
+
+  foreach ($TFVarFile in $TFVarFiles)
+  {
+
+      $tfVarFileArgs += "-var-file=""$TFVarFile """
+  }
+
+  Write-Host "$tfVarFileArgs"
 
   terraform plan -out $planName | Tee-Object $TerraformOutputFileName
 
