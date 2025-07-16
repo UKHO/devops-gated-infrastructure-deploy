@@ -39,7 +39,6 @@ $TFVarFileArgs = ''
 
 foreach ($TFVarFile in $TFVarFiles)
 {
-
     $TFVarFileArgs += "-var-file=""$TFVarFile"" "
 }
 
@@ -47,5 +46,7 @@ SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
 Terraform-Workspace -Workspace $Workspace
 Terraform-Validate
-Terraform-Plan -TerraformOutputFileName $terraformOutputFileName $TFVarFileArgs
+
+Start-Process -FilePath "Terraform-Plan" -ArgumentList "-TerraformOutputFileName ""$terraformOutputFileName"" $TFVarFileArgs"
+
 SetNeedsVerificationIfTerraformPlanWillDestroyResources -TerraformOutputFileName $terraformOutputFileName
