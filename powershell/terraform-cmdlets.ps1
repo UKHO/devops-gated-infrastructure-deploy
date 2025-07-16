@@ -99,13 +99,7 @@ function Terraform-Plan {
 
   $planName = "tfplan"
 
-  $tfVarFileArgs = ''
-
-  foreach ($TFVarFile in $TFVarFiles)
-  {
-
-      $tfVarFileArgs += "-var-file='$TFVarFile' "
-  }
+  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
 
   Invoke-Expression "terraform plan -out $planName $TFVarFileArgs" | Tee-Object $TerraformOutputFileName
 
@@ -178,4 +172,22 @@ function SetNeedsVerificationIfTerraformPlanWillDestroyResources {
       Write-Host "##vso[task.setvariable variable=needsVerification;isoutput=true]true"
     }
   }
+}
+
+function GetTFVarFileArgs {
+  param (
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [string[]] $TFVarFiles
+  )
+
+  $tfVarFileArgs = ''
+
+  foreach ($TFVarFile in $TFVarFiles)
+  {
+
+      $tfVarFileArgs += "-var-file='$TFVarFile' "
+  }
+
+  return $tfVarFileArgs
 }
