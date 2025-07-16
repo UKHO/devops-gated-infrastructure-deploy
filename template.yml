@@ -21,6 +21,9 @@
   - name: TerraformVariableMappings
     type: object
     default: { }
+  - name: TFVarFiles
+    type: string
+    default:
   - name: TerraformOutputVariables
     type: object
     default: { }
@@ -70,6 +73,7 @@ jobs:
                   -TFStateContainerName ${{parameters.TFStateContainerName}}
                   -TFStateBlobName ${{parameters.TFStateBlobName}}
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
+                  -TFVarFiles ${{parameters.TFVarFiles}}
                   -Workspace ${{lower(parameters.TerraformWorkspace)}}
                 failOnStderr: true 
               env:

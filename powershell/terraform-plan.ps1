@@ -8,6 +8,10 @@ param (
         })]
     [string] $TerraformFilesDirectory,
 
+
+    [Parameter]
+    [string[]] $TFVarFiles = []
+
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string] $TFStateResourceGroupName,
@@ -32,6 +36,12 @@ param (
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")
 
 $terraformOutputFileName = "terraform_output.txt"
+
+foreach ($TFVarFile in $TFVarFiles)
+{
+    Write-Host "--------------------"
+    Write-Host "$TFVarFile"
+}
 
 SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
