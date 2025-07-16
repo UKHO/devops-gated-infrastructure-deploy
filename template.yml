@@ -11,7 +11,7 @@
     type: string
   - name: TerraformWorkspace
     type: string
-    default:
+    default: ""
   - name: TerraformArtifactConfigRelativePath
     type: string
   - name: TerraformArtifact
