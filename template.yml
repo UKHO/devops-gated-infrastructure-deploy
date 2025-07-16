@@ -87,7 +87,7 @@ jobs:
   - job: manualVerification
     dependsOn: planInfrastructure
     pool: server
-    condition: and(succeeded(), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true'), ne('${{parameters.SkipManualVerification}}', 'true'))
+    condition: and(succeeded(), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true'), ne('${{lower(parameters.SkipManualVerification)}}', 'true'))
     displayName: "Service Manual Verification"
     steps:
       - task: Delay@1
