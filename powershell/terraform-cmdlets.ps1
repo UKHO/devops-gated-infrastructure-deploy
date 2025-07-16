@@ -104,12 +104,10 @@ function Terraform-Plan {
   foreach ($TFVarFile in $TFVarFiles)
   {
 
-      $tfVarFileArgs += "-var-file=""$TFVarFile """
+      $tfVarFileArgs += "-var-file='$TFVarFile' "
   }
 
-  Write-Host "$tfVarFileArgs"
-
-  terraform plan -out $planName | Tee-Object $TerraformOutputFileName
+  Invoke-Expression "terraform plan -out $planName $TFVarFileArgs" | Tee-Object $TerraformOutputFileName
 
   if ($( Test-Path $planName ) -eq $false) {
     Write-Host -ForegroundColor Red "Terraform Plan '$planName' was not created. See directory content:"
