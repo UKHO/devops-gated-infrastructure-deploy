@@ -173,8 +173,8 @@ function CheckTerraformPlanForChanges {
 
     if( $terraformOutputFile -notmatch "no changes" )
     {
-      Write-Host "Terraform plan indicates resources will be add, removed or changed, please verify..."
-      Write-Host "##vso[task.setvariable variable=needsVerification;isoutput=true]true"
+      Write-Host "Terraform plan indicates resources will be add, removed or changed"
+      Write-Host "##vso[task.setvariable variable=changesDetected;isoutput=true]true"
     }
   }
 }
