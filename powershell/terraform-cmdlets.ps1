@@ -171,8 +171,11 @@ function CheckTerraformPlanForChanges {
   else {
     $terraformOutputFile = Get-Content -Path $TerraformOutputFileName
 
-    if( $terraformOutputFile -notmatch "no changes" )
+    if( $terraformOutputFile -match "no changes" )
     {
+      Write-Host "Terraform plan indicates no changes"
+    }
+    else {
       Write-Host "Terraform plan indicates resources will be add, removed or changed"
       Write-Host "##vso[task.setvariable variable=changesDetected;isoutput=true]true"
     }
