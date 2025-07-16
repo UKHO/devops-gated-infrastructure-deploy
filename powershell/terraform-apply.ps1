@@ -24,8 +24,6 @@ param (
   [ValidateNotNullOrEmpty()]
   [string] $TFStateBlobName,
 
-  [Parameter(Mandatory)]
-  [ValidateNotNullOrEmpty()]
   [string] $Workspace,
 
   [string] $TerraformOutputVariables,
@@ -37,6 +35,6 @@ param (
 
 SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
-Terraform-Workspace -Workspace $Workspace
+if($Workspace) { Terraform-Workspace -Workspace $Workspace }
 Terraform-Apply -TFVarFiles $TFVarFiles
 ExportRequiredTerraformOutputVariables -TerraformOutputVariables $TerraformOutputVariables

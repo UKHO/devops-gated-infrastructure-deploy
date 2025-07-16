@@ -24,8 +24,6 @@ param (
     [ValidateNotNullOrEmpty()]
     [string] $TFStateBlobName,
 
-    [Parameter(Mandatory)]
-    [ValidateNotNullOrEmpty()]
     [string] $Workspace,
 
     [string[]] $TFVarFiles
@@ -37,7 +35,7 @@ $terraformOutputFileName = "terraform_output.txt"
 
 SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
-Terraform-Workspace -Workspace $Workspace
+if($Workspace) { Terraform-Workspace -Workspace $Workspace }
 Terraform-Validate
 Terraform-Plan -TerraformOutputFileName $terraformOutputFileName -TFVarFiles $TFVarFiles
 SetNeedsVerificationIfTerraformPlanWillDestroyResources -TerraformOutputFileName $terraformOutputFileName
