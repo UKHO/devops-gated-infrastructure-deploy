@@ -28,7 +28,7 @@ param (
     [ValidateNotNullOrEmpty()]
     [string] $Workspace,
 
-    [string[]] $TFVarFiles
+    [string[]] $TFVarFiles = []
 )
 
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")
