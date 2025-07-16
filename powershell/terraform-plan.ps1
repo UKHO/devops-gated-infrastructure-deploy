@@ -10,7 +10,7 @@ param (
 
 
     [Parameter]
-    [string[]] $TFVarFiles = []
+    [string[]] $TFVarFiles
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
