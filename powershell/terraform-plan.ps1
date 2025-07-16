@@ -40,7 +40,7 @@ $TFVarFileArgs = ''
 foreach ($TFVarFile in $TFVarFiles)
 {
 
-    TFVarFileArgs += "-var-file=""$TFVarFile"""
+    $TFVarFileArgs += "-var-file=""$TFVarFile"""
 }
 
 Write-Host "$TFVarFileArgs"
