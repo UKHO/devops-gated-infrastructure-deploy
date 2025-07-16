@@ -33,6 +33,7 @@
     default: ''
   - name: SkipManualVerification
     type: boolean
+    default: false
 
 jobs:
   - deployment: planInfrastructure
