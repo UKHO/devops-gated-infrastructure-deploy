@@ -32,7 +32,7 @@
     type: string
     default: ''
   - name: SkipManualVerification
-    type: bool
+    type: boolean
 
 jobs:
   - deployment: planInfrastructure
