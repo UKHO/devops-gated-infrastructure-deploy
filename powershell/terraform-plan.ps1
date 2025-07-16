@@ -46,5 +46,5 @@ SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
 Terraform-Workspace -Workspace $Workspace
 Terraform-Validate
-Terraform-Plan -TerraformOutputFileName -TFVarFiles $TFVarFiles
+Terraform-Plan -TerraformOutputFileName $terraformOutputFileName -TFVarFiles $TFVarFiles
 SetNeedsVerificationIfTerraformPlanWillDestroyResources -TerraformOutputFileName $terraformOutputFileName
