@@ -134,18 +134,22 @@ jobs:
               displayName: "Terraform Apply"
               name: deployment
               inputs:
-                targetType: filePath
-                filePath: "$(Pipeline.Workspace)/devops-gated-infrastructure-deploy/powershell/terraform-apply.ps1"
-                arguments: >
-                  -TFStateResourceGroupName ${{parameters.TFStateResourceGroupName}}
-                  -TFStateStorageAccountName ${{parameters.TFStateStorageAccountName}}
-                  -TFStateContainerName ${{parameters.TFStateContainerName}}
-                  -TFStateBlobName ${{parameters.TFStateBlobName}}
-                  -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
-                  -Workspace '${{lower(parameters.TerraformWorkspace)}}'
-                  -TerraformOutputVariables ${{convertToJson(parameters.TerraformOutputVariables)}}
-                  -TFVarFiles ${{parameters.TFVarFiles}}
-                failOnStderr: true
-              env:
-                ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
-                  ${{TerraformVariableMappings.Key}}: ${{TerraformVariableMappings.Value}}
+                targetType: 'inline'
+                script: |
+                  Write-Host "changesDetected: ${{ dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'] }}"
+                  Write-Host "SkipManualVerification: ${{ lower(parameters.SkipManualVerification)}} }}"
+              #   targetType: filePath
+              #   filePath: "$(Pipeline.Workspace)/devops-gated-infrastructure-deploy/powershell/terraform-apply.ps1"
+              #   arguments: >
+              #     -TFStateResourceGroupName ${{parameters.TFStateResourceGroupName}}
+              #     -TFStateStorageAccountName ${{parameters.TFStateStorageAccountName}}
+              #     -TFStateContainerName ${{parameters.TFStateContainerName}}
+              #     -TFStateBlobName ${{parameters.TFStateBlobName}}
+              #     -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
+              #     -Workspace '${{lower(parameters.TerraformWorkspace)}}'
+              #     -TerraformOutputVariables ${{convertToJson(parameters.TerraformOutputVariables)}}
+              #     -TFVarFiles ${{parameters.TFVarFiles}}
+              #   failOnStderr: true
+              # env:
+              #   ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
+              #     ${{TerraformVariableMappings.Key}}: ${{TerraformVariableMappings.Value}}
