@@ -103,7 +103,7 @@ jobs:
     dependsOn:
       - manualVerification
       - planInfrastructure
-    condition: or(succeeded('manualVerification'), and(succeeded('planInfrastructure'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true')), eq('${{lower(parameters.SkipManualVerification)}}', 'true'))
+    condition: succeeded('manualVerification')
     environment: "${{parameters.AzDOEnvironmentName}}"
     workspace:
       clean: all
@@ -136,7 +136,7 @@ jobs:
               inputs:
                 targetType: 'inline'
                 script: |
-                  Write-Host "SkipManualVerification: ${{ lower(parameters.SkipManualVerification)}} }}"
+                  Write-Host "SkipManualVerification: ${{ lower(parameters.SkipManualVerification)}}"
               #   targetType: filePath
               #   filePath: "$(Pipeline.Workspace)/devops-gated-infrastructure-deploy/powershell/terraform-apply.ps1"
               #   arguments: >
