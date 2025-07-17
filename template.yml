@@ -103,7 +103,7 @@ jobs:
     dependsOn:
       - manualVerification
       - planInfrastructure
-    condition: or(succeeded('manualVerification'), and(succeeded('planInfrastructure'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true')))
+    condition: or(succeeded('manualVerification'), and(succeeded('planInfrastructure'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true')), eq('${{lower(parameters.SkipManualVerification)}}', 'true'))
     environment: "${{parameters.AzDOEnvironmentName}}"
     workspace:
       clean: all
