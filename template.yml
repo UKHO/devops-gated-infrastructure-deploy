@@ -136,7 +136,6 @@ jobs:
               inputs:
                 targetType: 'inline'
                 script: |
-                  Write-Host "changesDetected: ${{ dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'] }}"
                   Write-Host "SkipManualVerification: ${{ lower(parameters.SkipManualVerification)}} }}"
               #   targetType: filePath
               #   filePath: "$(Pipeline.Workspace)/devops-gated-infrastructure-deploy/powershell/terraform-apply.ps1"
