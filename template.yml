@@ -24,13 +24,13 @@
     default: { }
   - name: TFVarFiles
     type: string
-    default: ''
+    default: ""
   - name: TerraformOutputVariables
     type: object
     default: { }
   - name: TerraformContainer
     type: string
-    default: ''
+    default: ""
   - name: SkipManualVerification
     type: boolean
     default: false
