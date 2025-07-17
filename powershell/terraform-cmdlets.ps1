@@ -193,7 +193,6 @@ function GetTFVarFileArgs {
 
   foreach ($TFVarFile in $TFVarFiles)
   {
-
       $tfVarFileArgs += "-var-file='$TFVarFile' "
   }
 
