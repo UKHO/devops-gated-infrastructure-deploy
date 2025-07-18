@@ -99,7 +99,8 @@ function Terraform-Plan {
 
   $planName = "tfplan"
 
-  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
+  $tfVarFileArgs = "" 
+  if ($TFVarFiles.Count -gt 0) { $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles }
 
   Invoke-Expression "terraform plan -out $planName $TFVarFileArgs" | Tee-Object $TerraformOutputFileName
 
@@ -121,7 +122,8 @@ function Terraform-Apply {
   $activity = "terraform apply command execution"
   Write-Output "Starting $activity"
 
-  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
+  $tfVarFileArgs = "" 
+  if ($TFVarFiles.Count -gt 0) { $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles }
 
   Invoke-Expression "terraform apply -auto-approve $TFVarFileArgs"
 
