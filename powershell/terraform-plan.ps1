@@ -26,7 +26,7 @@ param (
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $ManualVerificationMode
+    [string] $ManualVerificationMode,
 
     [string] $Workspace,
 
