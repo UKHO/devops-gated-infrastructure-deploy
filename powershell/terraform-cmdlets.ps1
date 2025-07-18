@@ -200,6 +200,10 @@ function SetChangesDetectedAndNeedsManualVerification {
         Write-Host "Terraform plan indicates resources will be add, removed or changed, please verify..."
         Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
       }
+      else {
+        Write-Host "Terraform plan indicates resources will be add, removed or changed"
+        Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
+      }
     }
   }
 }
