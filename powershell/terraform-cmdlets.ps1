@@ -161,7 +161,7 @@ function SetChangesDetectedAndNeedsManualVerification {
   param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $ManualVerificationMode
+    [string] $ManualVerificationMode,
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
