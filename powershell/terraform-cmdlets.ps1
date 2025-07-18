@@ -91,7 +91,7 @@ function Terraform-Plan {
     [ValidateNotNullOrEmpty()]
     [string] $TerraformOutputFileName,
 
-    [string[]] $TFVarFiles
+    [string] $TFVarFiles
   )
 
   $activity = "terraform plan command execution"
@@ -99,8 +99,9 @@ function Terraform-Plan {
 
   $planName = "tfplan"
 
-  $tfVarFileArgs = "" 
-  if ($TFVarFiles.Count -gt 0) { $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles }
+  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
+
+  Write-Output "tfVarFileArgs $tfVarFileArgs"
 
   Invoke-Expression "terraform plan -out $planName $TFVarFileArgs" | Tee-Object $TerraformOutputFileName
 
@@ -116,14 +117,13 @@ function Terraform-Plan {
 function Terraform-Apply {
   [CmdletBinding()]
   param (
-    [string[]] $TFVarFiles
+    [string] $TFVarFiles
   )
 
   $activity = "terraform apply command execution"
   Write-Output "Starting $activity"
 
-  $tfVarFileArgs = "" 
-  if ($TFVarFiles.Count -gt 0) { $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles }
+  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
 
   Invoke-Expression "terraform apply -auto-approve $TFVarFileArgs"
 
@@ -213,12 +213,12 @@ function SetChangesDetectedAndNeedsManualVerification {
 function GetTFVarFileArgs {
   param (
     [Parameter(Mandatory)]
-    [string[]] $TFVarFiles
+    [string] $TFVarFiles
   )
 
   $tfVarFileArgs = ''
 
-  foreach ($TFVarFile in $TFVarFiles)
+  foreach ($TFVarFile in $TFVarFiles -split " ")
   {
       $tfVarFileArgs += "-var-file='$TFVarFile' "
   }

@@ -28,7 +28,7 @@ param (
 
   [string] $TerraformOutputVariables,
 
-  [string[]] $TFVarFiles
+  [string] $TFVarFiles
 )
 
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")

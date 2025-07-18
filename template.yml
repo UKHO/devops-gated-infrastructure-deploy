@@ -23,8 +23,8 @@
     type: object
     default: { }
   - name: TFVarFiles
-    type: string
-    default: "@()"
+    type: object
+    default: { }
   - name: TerraformOutputVariables
     type: object
     default: { }
@@ -83,7 +83,7 @@ jobs:
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
                   -ManualVerificationMode "${{parameters.ManualVerificationMode}}"
                   -Workspace "${{lower(parameters.TerraformWorkspace)}}"
-                  -TFVarFiles ${{parameters.TFVarFiles}}
+                  -TFVarFiles ${{convertToJson(parameters.TFVarFiles)}}
                 failOnStderr: true 
               env:
                 ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
@@ -149,7 +149,7 @@ jobs:
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
                   -Workspace '${{lower(parameters.TerraformWorkspace)}}'
                   -TerraformOutputVariables ${{convertToJson(parameters.TerraformOutputVariables)}}
-                  -TFVarFiles ${{parameters.TFVarFiles}}
+                  -TFVarFiles ${{convertToJson(parameters.TFVarFiles)}}
                 failOnStderr: true
               env:
                 ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
