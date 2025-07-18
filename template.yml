@@ -24,7 +24,7 @@
     default: { }
   - name: TFVarFiles
     type: string
-    default: "[]"
+    default: '""""""'
   - name: TerraformOutputVariables
     type: object
     default: { }
