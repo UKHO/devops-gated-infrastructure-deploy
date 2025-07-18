@@ -191,17 +191,17 @@ function SetChangesDetectedAndNeedsManualVerification {
           Where-Object { $_ -ne "" }).length
 
         if ($totalDestroyLines -ge $numberOfOccurancesToIndicateDeletionOfResources) {
-          Write-Host "Terraform plan indicates resources will be destroyed, please verify..."
+          Write-Host "Terraform plan indicates resources will be destroyed. Please verify..."
           Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
         }
       }
       elseif ($ManualVerificationMode -eq "HaltOnAny")
       {
-        Write-Host "Terraform plan indicates resources will be add, removed or changed, please verify..."
+        Write-Host "Terraform plan indicates resources will be add, removed or changed. Please verify..."
         Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
       }
       else {
-        Write-Host "Terraform plan indicates resources will be add, removed or changed"
+        Write-Host "Terraform plan indicates resources will be add, removed or changed. Manual verification is disabled and will be skipped..."
         Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
       }
     }
