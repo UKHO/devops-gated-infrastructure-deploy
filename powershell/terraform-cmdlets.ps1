@@ -156,9 +156,13 @@ function ExportRequiredTerraformOutputVariables {
   }
 }
 
-function CheckTerraformPlanForChanges {
+function SetChangesDetectedAndNeedsManualVerification {
   [CmdletBinding()]
   param (
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [string] $ManualVerificationMode
+
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string] $TerraformOutputFileName
@@ -174,10 +178,28 @@ function CheckTerraformPlanForChanges {
     if( $terraformOutputFile -match "no changes" )
     {
       Write-Host "Terraform plan indicates no changes"
+      Write-Host "##vso[task.setvariable variable=changesDetected;isoutput=true]false"
+      Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
     }
     else {
-      Write-Host "Terraform plan indicates resources will be add, removed or changed"
       Write-Host "##vso[task.setvariable variable=changesDetected;isoutput=true]true"
+
+      if ($ManualVerificationMode -eq "HaltOnDestroy") {
+        $numberOfOccurancesToIndicateDeletionOfResources = 2
+        $totalDestroyLines = ($terraformOutputFile |
+          Select-String -Pattern "destroy" -CaseSensitive |
+          Where-Object { $_ -ne "" }).length
+
+        if ($totalDestroyLines -ge $numberOfOccurancesToIndicateDeletionOfResources) {
+          Write-Host "Terraform plan indicates resources will be destroyed, please verify..."
+          Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
+        }
+      }
+      elseif ($ManualVerificationMode -eq "HaltOnAny")
+      {
+        Write-Host "Terraform plan indicates resources will be add, removed or changed, please verify..."
+        Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
+      }
     }
   }
 }
@@ -185,7 +207,6 @@ function CheckTerraformPlanForChanges {
 function GetTFVarFileArgs {
   param (
     [Parameter(Mandatory)]
-    [ValidateNotNullOrEmpty()]
     [string[]] $TFVarFiles
   )
 

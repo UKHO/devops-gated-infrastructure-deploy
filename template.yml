@@ -31,9 +31,13 @@
   - name: TerraformContainer
     type: string
     default: ""
-  - name: SkipManualVerification
-    type: boolean
-    default: false
+  - name: ManualVerificationMode
+    type: string
+    default: HaltOnDestroy
+    values:
+      - HaltOnDestroy
+      - HaltOnAny
+      - Disabled
 
 jobs:
   - deployment: planInfrastructure
@@ -77,6 +81,7 @@ jobs:
                   -TFStateContainerName ${{parameters.TFStateContainerName}}
                   -TFStateBlobName ${{parameters.TFStateBlobName}}
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
+                  -ManualVerificationMode ${{parameters.ManualVerificationMode}}
                   -Workspace '${{lower(parameters.TerraformWorkspace)}}'
                   -TFVarFiles ${{parameters.TFVarFiles}}
                 failOnStderr: true 
@@ -87,7 +92,7 @@ jobs:
   - job: manualVerification
     dependsOn: planInfrastructure
     pool: server
-    condition: and(succeeded(), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true'), ne('${{lower(parameters.SkipManualVerification)}}', 'true'))
+    condition: and(succeeded(), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.needsManualVerification'], 'true'))
     displayName: "Service Manual Verification"
     steps:
       - task: Delay@1
@@ -103,7 +108,7 @@ jobs:
     dependsOn:
       - manualVerification
       - planInfrastructure
-    condition: or(succeeded('manualVerification'), and(succeeded('planInfrastructure'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true'), eq('${{lower(parameters.SkipManualVerification)}}', 'true')))
+    condition: or(succeeded('manualVerification'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true'))
     environment: "${{parameters.AzDOEnvironmentName}}"
     workspace:
       clean: all

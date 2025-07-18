@@ -24,6 +24,10 @@ param (
     [ValidateNotNullOrEmpty()]
     [string] $TFStateBlobName,
 
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [string] $ManualVerificationMode
+
     [string] $Workspace,
 
     [string[]] $TFVarFiles
@@ -38,4 +42,4 @@ Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStora
 if($Workspace) { Terraform-Workspace -Workspace $Workspace }
 Terraform-Validate
 Terraform-Plan -TerraformOutputFileName $terraformOutputFileName -TFVarFiles $TFVarFiles
-CheckTerraformPlanForChanges -TerraformOutputFileName $terraformOutputFileName
+SetChangesDetectedAndNeedsManualVerification -ManualVerificationMode $ManualVerificationMode -TerraformOutputFileName $terraformOutputFileName
