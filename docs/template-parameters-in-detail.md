@@ -9,11 +9,13 @@ Consult the table below for information regarding the parameters. Hyperlinks lea
 | TFStateStorageAccountName                                                   | Yes      | string | Terraform state storage account                                                                                                                                                                                                                                            |
 | TFStateContainerName                                                        | Yes      | string | Terraform state container                                                                                                                                                                                                                                                  |
 | TFStateBlobName                                                             | Yes      | string | Terraform state blob                                                                                                                                                                                                                                                       |
-| [TerraformWorkspace](#TerraformWorkspace)                                   | Yes      | string | Terraform workspace                                                                                                                                                                                                                                                        |
+| [TerraformWorkspace](#TerraformWorkspace)                                   | No      | string | Terraform workspace                                                                                                                                                                                                                                                        |
+| [ManualVerificationMode](#ManualVerificationMode)                           | No      | string | Controls Manual Verfification                                                                                                                                                                                                                                                     |
 | [TerraformArtifact](#TerraformArtifact)                                     | Yes      | string | Artifact containing your .tf files and any other supporting files for your deployment                                                                                                                                                                                      |
 | [TerraformArtifactConfigRelativePath](#TerraformArtifactConfigRelativePath) | Yes      | string | Relative path to the .tf files inside your artifact                                                                                                                                                                                                                        |
 | [JobsVariableMappings](#JobsVariableMappings)                               | No       | object | A key/value map of variables to be added to the templates jobs. Each key/value pair can either be: a normal variable, a variable group, or a variable template. Current limitation is that there can only be 1 group and 1 template defined otherwise it is duplicate key. |
 | [TerraformVariableMappings](#TerraformVariableMappings)                     | Yes      | object | A key/value map of Terraform variables to be injected into the PowerShell runtime environment for Terraform to use                                                                                                                                                         |
+| [TFVarFiles](#TFVarFiles)                                                   | No       | object | An array of relative paths for Terraform .tfvars variable files |
 | [TerraformOutputVariables](#TerraformOutputVariables)                       | No       | object | An array of Terraform output variables to be retrieved after the Terraform apply has completed                                                                                                                                                                             |
 
 Parameters in detail:
@@ -21,6 +23,10 @@ Parameters in detail:
 ## TerraformWorkspace
 
 This value will be appended onto the blob name in the form `[TFStateBlobName]:[TerraformWorkspace]`, e.g. `terraform.deployment.tfplan:dev`
+
+## ManualVerificationMode
+
+Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `Disabled`, `HaltOnDestroy` and `HaltOnAny`. Default behaviour if value not provided is HaltOnDestroy
 
 ## TerraformArtifact
 
@@ -89,4 +95,14 @@ Fairly common to have Terraform output variables that are values passed back out
  variables:  
  - name: "WEB_APP_NAME"  
    value: $[dependencies.deployInfrastructure.outputs['deployInfrastructure.deployment.web_app_name']]
+```
+
+## TFVarFiles
+
+Example:
+
+``` yaml
+  TFVarFiles:
+    config/common.tfvars
+    config/stg.tfvars
 ```
