@@ -107,3 +107,6 @@ Example:
   TFVarFiles:
     config/common.tfvars
     config/stg.tfvars
+```
+
+Will become `-var-file='config/common.tfvars' -var-file='config/stf.tfvars'` on the end of the `terraform plan` & `terraform apply`.
