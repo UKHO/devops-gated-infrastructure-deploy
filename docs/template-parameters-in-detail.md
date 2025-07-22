@@ -26,7 +26,7 @@ This value will be appended onto the blob name in the form `[TFStateBlobName]:[T
 
 ## ManualVerificationMode
 
-Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `Disabled`, `HaltOnDestroy` and `HaltOnAny`. Default behaviour if value not provided is HaltOnDestroy
+Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `Disabled`, `HaltOnDestroy` and `HaltOnAny`. Default behaviour if value not provided is HaltOnDestroy.
 
 ## TerraformArtifact
 
