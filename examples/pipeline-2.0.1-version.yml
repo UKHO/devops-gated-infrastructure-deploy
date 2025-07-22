@@ -40,10 +40,6 @@ stages:
           TerraformArtifactConfigRelativePath: "/"
           TerraformArtifact: "TerraformArtifact"
           TerraformContainer: TerraformContainer
-          ManualVerificationMode: HaltOnDestroy 
-          TFVarFiles:
-            config/common.tfvars
-            config/live.tfvars
           JobsVariableMappings:
             group: AProjectVariableGroupThatDoesntActuallyExistYet
             aVariableName: aVariableValue

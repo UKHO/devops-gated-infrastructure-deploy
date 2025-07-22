@@ -101,8 +101,6 @@ function Terraform-Plan {
 
   $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
 
-  Write-Output "tfVarFileArgs $tfVarFileArgs"
-
   Invoke-Expression "terraform plan -out $planName $TFVarFileArgs" | Tee-Object $TerraformOutputFileName
 
   if ($( Test-Path $planName ) -eq $false) {
