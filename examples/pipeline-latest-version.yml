@@ -40,7 +40,7 @@ stages:
           TerraformArtifactConfigRelativePath: "/"
           TerraformArtifact: "TerraformArtifact"
           TerraformContainer: TerraformContainer
-          ManualVerificationMode: HaltOnDestroy 
+          RunMode: VerifyOnDestroy 
           TFVarFiles:
             config/common.tfvars
             config/live.tfvars

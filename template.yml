@@ -31,13 +31,14 @@
   - name: TerraformContainer
     type: string
     default: ""
-  - name: ManualVerificationMode
+  - name: RunMode
     type: string
-    default: HaltOnDestroy
+    default: RunMode
     values:
-      - HaltOnDestroy
-      - HaltOnAny
-      - Disabled
+      - VerifyOnDestroy
+      - VerifyOnAny
+      - VerifyDisabled
+      - PlanOnly
 
 jobs:
   - deployment: planInfrastructure
@@ -81,7 +82,7 @@ jobs:
                   -TFStateContainerName ${{parameters.TFStateContainerName}}
                   -TFStateBlobName ${{parameters.TFStateBlobName}}
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
-                  -ManualVerificationMode "${{parameters.ManualVerificationMode}}"
+                  -RunMode "${{parameters.RunMode}}"
                   -Workspace "${{lower(parameters.TerraformWorkspace)}}"
                   -TFVarFiles ${{convertToJson(parameters.TFVarFiles)}}
                 failOnStderr: true 
@@ -108,7 +109,7 @@ jobs:
     dependsOn:
       - manualVerification
       - planInfrastructure
-    condition: or(succeeded('manualVerification'), and(succeeded('planInfrastructure'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.changesDetected'], 'true'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.needsManualVerification'], 'false')))
+    condition: or(succeeded('manualVerification'), and(succeeded('planInfrastructure'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.runApply'], 'true'), eq(dependencies.planInfrastructure.outputs['planInfrastructure.plan.needsManualVerification'], 'false')))
     environment: "${{parameters.AzDOEnvironmentName}}"
     workspace:
       clean: all

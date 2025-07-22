@@ -26,7 +26,7 @@ param (
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $ManualVerificationMode,
+    [string] $RunMode,
 
     [string] $Workspace,
 
@@ -42,4 +42,4 @@ Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStora
 if($Workspace) { Terraform-Workspace -Workspace $Workspace }
 Terraform-Validate
 Terraform-Plan -TerraformOutputFileName $terraformOutputFileName -TFVarFiles $TFVarFiles
-SetChangesDetectedAndNeedsManualVerification -ManualVerificationMode $ManualVerificationMode -TerraformOutputFileName $terraformOutputFileName
+SetRunApplyAndNeedsManualVerification -RunMode $RunMode -TerraformOutputFileName $terraformOutputFileName

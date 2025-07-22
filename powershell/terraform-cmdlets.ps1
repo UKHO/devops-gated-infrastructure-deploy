@@ -156,12 +156,12 @@ function ExportRequiredTerraformOutputVariables {
   }
 }
 
-function SetChangesDetectedAndNeedsManualVerification {
+function SetRunApplyAndNeedsManualVerification {
   [CmdletBinding()]
   param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $ManualVerificationMode,
+    [string] $RunMode,
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
@@ -178,31 +178,38 @@ function SetChangesDetectedAndNeedsManualVerification {
     if( $terraformOutputFile -match "no changes" )
     {
       Write-Host "Terraform plan indicates no changes"
-      Write-Host "##vso[task.setvariable variable=changesDetected;isoutput=true]false"
       Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
+      Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]false"
+    }
+    elseif ($RunMode -eq "PlanOnly")
+    {
+      Write-Host "RunMode set to PlanOnly. Verification and apply will be skipped..."
+      Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
+      Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]false"
     }
     else {
-      Write-Host "##vso[task.setvariable variable=changesDetected;isoutput=true]true"
-
-      if ($ManualVerificationMode -eq "HaltOnDestroy") {
+      if ($RunMode -eq "VerifyOnDestroy") {
         $numberOfOccurancesToIndicateDeletionOfResources = 2
         $totalDestroyLines = ($terraformOutputFile |
           Select-String -Pattern "destroy" -CaseSensitive |
           Where-Object { $_ -ne "" }).length
 
         if ($totalDestroyLines -ge $numberOfOccurancesToIndicateDeletionOfResources) {
-          Write-Host "Terraform plan indicates resources will be destroyed. Please verify..."
+          Write-Host "RunMode set to VerifyOnDestroy and terraform plan indicates resources will be destroyed. Please verify..."
           Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
+          Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]true"
         }
       }
-      elseif ($ManualVerificationMode -eq "HaltOnAny")
+      elseif ($RunMode -eq "VerifyOnAny")
       {
-        Write-Host "Terraform plan indicates resources will be add, removed or changed. Please verify..."
+        Write-Host "RunMode set to VerifyOnAny and terraform plan indicates resources will be add, removed or changed. Please verify..."
         Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
+        Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]true"
       }
       else {
-        Write-Host "Terraform plan indicates resources will be add, removed or changed. Manual verification is disabled and will be skipped..."
+        Write-Host "RunMode set to VerifyDisabled and terraform plan indicates resources will be add, removed or changed. Manual verification will be skipped..."
         Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
+        Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]true"
       }
     }
   }

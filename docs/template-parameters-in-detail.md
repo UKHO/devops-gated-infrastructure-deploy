@@ -10,7 +10,7 @@ Consult the table below for information regarding the parameters. Hyperlinks lea
 | TFStateContainerName                                                        | Yes      | string | Terraform state container                                                                                                                                                                                                                                                  |
 | TFStateBlobName                                                             | Yes      | string | Terraform state blob                                                                                                                                                                                                                                                       |
 | [TerraformWorkspace](#TerraformWorkspace)                                   | No      | string | Terraform workspace                                                                                                                                                                                                                                                        |
-| [ManualVerificationMode](#ManualVerificationMode)                           | No      | string | Controls Manual Verfification                                                                                                                                                                                                                                                     |
+| [RunMode](#RunMode)                           | No      | string | Controls Manual Verfification                                                                                                                                                                                                                                                     |
 | [TerraformArtifact](#TerraformArtifact)                                     | Yes      | string | Artifact containing your .tf files and any other supporting files for your deployment                                                                                                                                                                                      |
 | [TerraformArtifactConfigRelativePath](#TerraformArtifactConfigRelativePath) | Yes      | string | Relative path to the .tf files inside your artifact                                                                                                                                                                                                                        |
 | [JobsVariableMappings](#JobsVariableMappings)                               | No       | object | A key/value map of variables to be added to the templates jobs. Each key/value pair can either be: a normal variable, a variable group, or a variable template. Current limitation is that there can only be 1 group and 1 template defined otherwise it is duplicate key. |
@@ -24,9 +24,9 @@ Parameters in detail:
 
 This value will be appended onto the blob name in the form `[TFStateBlobName]:[TerraformWorkspace]`, e.g. `terraform.deployment.tfplan:dev`
 
-## ManualVerificationMode
+## RunMode
 
-Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `Disabled`, `HaltOnDestroy` and `HaltOnAny`. Default behaviour if value not provided is HaltOnDestroy. A common strategy would be to have HaltOnX for live environment and Disabled for all other environments.
+Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `PlanOnly`, `VerifyDisabled`, `VerifyOnDestroy` and `VerifyOnAny`. Default behaviour if value not provided is VerifyOnDestroy. A common strategy would be to have HaltOnX for live environment and VerifyDisabled for all other environments.
 
 ## TerraformArtifact
 

@@ -5,7 +5,7 @@
 Various updates.
 
 - Added support for .tfvars files (richl-ukho)
-- Added ManualVerificationMode param. Validation can now be triggered for all changes, just destroys or not at all, for non-live envs (richl-ukho)
+- Added RunMode param. Validation can now be triggered for all changes, just destroys or not at all, for non-live envs (richl-ukho)
 - Made TerraformWorkspace param optional (richl-ukho)
 
 ## [2.0.1] - 2025-05-20
