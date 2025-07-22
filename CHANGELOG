@@ -2,11 +2,11 @@
 
 ## [2.1.0] - 2025-06-21
 
-Various updates.
+Improvements for increased manual verification flexiblity and modes.
 
-- Added support for .tfvars files (richl-ukho)
+- Added support for .tfvars files (@richl-ukho)
 - Added RunMode param. Validation can now be triggered for all changes, just destroys or not at all, for non-live envs (richl-ukho)
-- Made TerraformWorkspace param optional (richl-ukho)
+- Made TerraformWorkspace param optional (@richl-ukho)
 
 ## [2.0.1] - 2025-05-20
 

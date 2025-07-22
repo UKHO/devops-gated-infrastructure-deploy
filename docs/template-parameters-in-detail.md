@@ -99,6 +99,8 @@ Fairly common to have Terraform output variables that are values passed back out
 
 ## TFVarFiles
 
+This parameters allows you to supply TF Variable Files to the `terraform plan` and `terraform apply` commandline execution. Each file entry will be automatically formatted `"-var-file='$TFVarFile' "`.
+
 Example:
 
 ``` yaml
@@ -106,3 +108,5 @@ Example:
     config/common.tfvars
     config/stg.tfvars
 ```
+
+Will become `-var-file='config/common.tfvars' -var-file='config/stf.tfvars'` on the end of the `terraform plan` & `terraform apply`.
