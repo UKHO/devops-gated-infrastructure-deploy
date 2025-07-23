@@ -26,7 +26,11 @@ param (
 
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $Workspace
+    [string] $RunMode,
+
+    [string] $Workspace,
+
+    [string] $TFVarFiles
 )
 
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")
@@ -35,7 +39,7 @@ $terraformOutputFileName = "terraform_output.txt"
 
 SetLocationAndOutputInformation -Directory $TerraformFilesDirectory
 Terraform-Init -TFStateResourceGroupName $TFStateResourceGroupName -TFStateStorageAccountName $TFStateStorageAccountName -TFStateContainerName $TFStateContainerName -TFStateBlobName $TFStateBlobName
-Terraform-Workspace -Workspace $Workspace
+if($Workspace) { Terraform-Workspace -Workspace $Workspace }
 Terraform-Validate
-Terraform-Plan -TerraformOutputFileName $terraformOutputFileName
-SetNeedsVerificationIfTerraformPlanWillDestroyResources -TerraformOutputFileName $terraformOutputFileName
+Terraform-Plan -TerraformOutputFileName $terraformOutputFileName -TFVarFiles $TFVarFiles
+SetRunApplyAndNeedsManualVerification -RunMode $RunMode -TerraformOutputFileName $terraformOutputFileName

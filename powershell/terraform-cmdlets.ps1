@@ -89,7 +89,9 @@ function Terraform-Plan {
   param (
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string] $TerraformOutputFileName
+    [string] $TerraformOutputFileName,
+
+    [string] $TFVarFiles
   )
 
   $activity = "terraform plan command execution"
@@ -97,7 +99,9 @@ function Terraform-Plan {
 
   $planName = "tfplan"
 
-  terraform plan -out $planName | Tee-Object $TerraformOutputFileName
+  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
+
+  Invoke-Expression "terraform plan -out $planName $TFVarFileArgs" | Tee-Object $TerraformOutputFileName
 
   if ($( Test-Path $planName ) -eq $false) {
     Write-Host -ForegroundColor Red "Terraform Plan '$planName' was not created. See directory content:"
@@ -109,10 +113,17 @@ function Terraform-Plan {
 }
 
 function Terraform-Apply {
+  [CmdletBinding()]
+  param (
+    [string] $TFVarFiles
+  )
+
   $activity = "terraform apply command execution"
   Write-Output "Starting $activity"
 
-  terraform apply -auto-approve
+  $tfVarFileArgs = GetTFVarFileArgs -TFVarFiles $TFVarFiles
+
+  Invoke-Expression "terraform apply -auto-approve $TFVarFileArgs"
 
   ThrowErrorIfCommandHadError -Activity $activity
   Write-Output "Finished $activity"
@@ -145,9 +156,13 @@ function ExportRequiredTerraformOutputVariables {
   }
 }
 
-function SetNeedsVerificationIfTerraformPlanWillDestroyResources {
+function SetRunApplyAndNeedsManualVerification {
   [CmdletBinding()]
   param (
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    [string] $RunMode,
+
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
     [string] $TerraformOutputFileName
@@ -158,14 +173,54 @@ function SetNeedsVerificationIfTerraformPlanWillDestroyResources {
     Get-ChildItem -File | ForEach-Object { Write-Host $_ }
   }
   else {
-    $numberOfOccurancesToIndicateDeletionOfResources = 2
-    $totalDestroyLines = (Get-Content -Path $TerraformOutputFileName |
-      Select-String -Pattern "destroy" -CaseSensitive |
-      Where-Object { $_ -ne "" }).length
+    $terraformOutputFile = Get-Content -Path $TerraformOutputFileName
 
-    if ($totalDestroyLines -ge $numberOfOccurancesToIndicateDeletionOfResources) {
-      Write-Host "Terraform plan indicates resources will be destroyed, please verify..."
-      Write-Host "##vso[task.setvariable variable=needsVerification;isoutput=true]true"
+    if( $terraformOutputFile -match "no changes" )
+    {
+      Write-Host "Terraform plan indicates no changes"
+      Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
+      Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]false"
+    }
+    else {
+      if ($RunMode -eq "VerifyOnDestroy") {
+        $numberOfOccurancesToIndicateDeletionOfResources = 2
+        $totalDestroyLines = ($terraformOutputFile |
+          Select-String -Pattern "destroy" -CaseSensitive |
+          Where-Object { $_ -ne "" }).length
+
+        if ($totalDestroyLines -ge $numberOfOccurancesToIndicateDeletionOfResources) {
+          Write-Host "RunMode set to VerifyOnDestroy and terraform plan indicates resources will be destroyed. Please verify..."
+          Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
+          Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]true"
+        }
+      }
+      elseif ($RunMode -eq "VerifyOnAny")
+      {
+        Write-Host "RunMode set to VerifyOnAny and terraform plan indicates resources will be add, removed or changed. Please verify..."
+        Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]true"
+        Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]true"
+      }
+      else {
+        Write-Host "RunMode set to VerifyDisabled and terraform plan indicates resources will be add, removed or changed. Manual verification will be skipped..."
+        Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
+        Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]true"
+      }
     }
   }
+}
+
+function GetTFVarFileArgs {
+  param (
+    [Parameter(Mandatory)]
+    [string] $TFVarFiles
+  )
+
+  $tfVarFileArgs = ''
+
+  foreach ($TFVarFile in $TFVarFiles -split " ")
+  {
+      $tfVarFileArgs += "-var-file='$TFVarFile' "
+  }
+
+  return $tfVarFileArgs
 }
