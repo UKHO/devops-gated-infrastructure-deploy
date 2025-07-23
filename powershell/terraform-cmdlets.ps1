@@ -181,12 +181,6 @@ function SetRunApplyAndNeedsManualVerification {
       Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
       Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]false"
     }
-    elseif ($RunMode -eq "PlanOnly")
-    {
-      Write-Host "RunMode set to PlanOnly. Verification and apply will be skipped..."
-      Write-Host "##vso[task.setvariable variable=needsManualVerification;isoutput=true]false"
-      Write-Host "##vso[task.setvariable variable=runApply;isoutput=true]false"
-    }
     else {
       if ($RunMode -eq "VerifyOnDestroy") {
         $numberOfOccurancesToIndicateDeletionOfResources = 2
