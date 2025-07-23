@@ -26,7 +26,7 @@ This value will be appended onto the blob name in the form `[TFStateBlobName]:[T
 
 ## RunMode
 
-Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `PlanOnly`, `VerifyDisabled`, `VerifyOnDestroy` and `VerifyOnAny`. Default behaviour if value not provided is VerifyOnDestroy. A common strategy would be to have HaltOnX for live environment and VerifyDisabled for all other environments.
+Controls whether Manual Verfification is to be triggered when changes are detected. Valid values are: `PlanOnly`, `VerifyDisabled`, `VerifyOnDestroy` and `VerifyOnAny`. Default behaviour if value not provided is VerifyOnDestroy. A common strategy would be to have HaltOnX for live environment and VerifyDisabled for all other environments. With PlanOnly for any pull requests purposes.
 
 ## TerraformArtifact
 
