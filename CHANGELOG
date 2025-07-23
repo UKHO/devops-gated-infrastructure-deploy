@@ -5,7 +5,7 @@
 Improvements for increased manual verification flexiblity and modes.
 
 - Added support for .tfvars files (@richl-ukho)
-- Added RunMode param. Validation can now be triggered for all changes, just destroys or not at all, for non-live envs (richl-ukho)
+- Added RunMode param. Validation can now be triggered for all changes, just destroys or not at all. RunMode has option for PlanOnly to only run the terraform plan and no apply. (@richl-ukho)
 - Made TerraformWorkspace param optional (@richl-ukho)
 
 ## [2.0.1] - 2025-05-20
