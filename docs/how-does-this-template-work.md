@@ -18,6 +18,7 @@ flowchart TD
     pipeline([Pipeline])
     plan[[Plan Job]]
     changes{Changes<br>Detected}
+    planOnly{Plan<br>Only}
     mode{Manual<br>Verification<br>Mode}
     gate{Approval<br>Gate}
     destroy{Are<br>changes<br>destructive?}
@@ -26,7 +27,9 @@ flowchart TD
     failed([Template Failed])
 
     pipeline-->plan
-    plan-->changes
+    plan-->planOnly
+    planOnly--Yes-->succeeded
+    planOnly--No-->changes
     changes--No changes detected-->succeeded
     changes--Changes detected-->mode
     mode--VerifyDisabled-->apply
