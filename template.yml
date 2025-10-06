@@ -77,7 +77,7 @@ jobs:
               displayName: 'Download terraform artifact'
 
           # Fetch Key Vault secrets into the job environment
-            - template: ../templates/include-kv.yml
+            - template: templates/include-kv.yml
               parameters:
                 azureSubscription: ${{ parameters.azureSubscription }}
                 keyVaultName: ${{ parameters.keyVaultName }}
@@ -152,7 +152,7 @@ jobs:
                 displayName: 'Download terraform artifact'
 
               # Fetch Key Vault secrets into the job environment
-              - template: ../templates/include-kv.yml
+              - template: templates/include-kv.yml
                 parameters:
                   azureSubscription: ${{ parameters.azureSubscription }}
                   keyVaultName: ${{ parameters.keyVaultName }}
