@@ -1,15 +1,15 @@
 parameters:
-  - name: azureSubscription
+  - name: AzureSubscription
     type: string
-  - name: keyVaultName
+  - name: KeyVaultName
     type: string
-  - name: secretsFilter
+  - name: SecretsFilter
     type: string
  
 steps:
   - task: AzureKeyVault@2
     name: FetchSecrets
     inputs:
-      azureSubscription: ${{ parameters.azureSubscription }}
-      KeyVaultName: ${{ parameters.keyVaultName }}
-      SecretsFilter: ${{ parameters.secretsFilter }}
+      azureSubscription: ${{ parameters.AzureSubscription }}
+      KeyVaultName: ${{ parameters.KeyVaultName }}
+      SecretsFilter: ${{ parameters.SecretsFilter }}
