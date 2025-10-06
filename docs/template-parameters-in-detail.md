@@ -17,6 +17,9 @@ Consult the table below for information regarding the parameters. Hyperlinks lea
 | [TerraformVariableMappings](#TerraformVariableMappings)                     | Yes      | object | A key/value map of Terraform variables to be injected into the PowerShell runtime environment for Terraform to use                                                                                                                                                         |
 | [TFVarFiles](#TFVarFiles)                                                   | No       | object | An array of relative paths for Terraform .tfvars variable files |
 | [TerraformOutputVariables](#TerraformOutputVariables)                       | No       | object | An array of Terraform output variables to be retrieved after the Terraform apply has completed                                                                                                                                                                             |
+| [azureSubscription](#azureSubscription)                                     | Yes      | string | Azure subscription service connection name for Key Vault access                                                                                                                                                                                                           |
+| [keyVaultName](#keyVaultName)                                               | Yes      | string | Name of the Azure Key Vault containing secrets                                                                                                                                                                                                                            |
+| [secretsFilter](#secretsFilter)                                             | Yes      | string | Filter pattern for which secrets to retrieve from Key Vault                                                                                                                                                                                                               |
 
 Parameters in detail:
 
@@ -110,3 +113,24 @@ Example:
 ```
 
 Will become `-var-file='config/common.tfvars' -var-file='config/stf.tfvars'` on the end of the `terraform plan` & `terraform apply`.
+
+## azureSubscription
+
+The name of the Azure DevOps service connection configured to access the Azure subscription containing the Key Vault.
+
+## keyVaultName
+
+The name of the Azure Key Vault from which to retrieve secrets.
+
+## secretsFilter
+
+A filter pattern specifying which secrets to retrieve from the Key Vault. Supports wildcards (e.g., `*` for all secrets, `APP-*` for secrets starting with "APP-").
+
+Example usage:
+```yaml
+azureSubscription: "MyAzureServiceConnection"
+keyVaultName: "my-key-vault"
+secretsFilter: "*"
+```
+
+The retrieved secrets will be available as environment variables in both the plan and apply jobs.
