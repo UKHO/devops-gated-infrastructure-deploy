@@ -124,13 +124,13 @@ The name of the Azure Key Vault from which to retrieve secrets.
 
 ## KeyVaultSecretsFilter
 
-A filter pattern is specifying which secrets to retrieve from the Key Vault. Supports wildcards (e.g., `*` for all secrets, `APP-*` for secrets starting with "APP-").
+A filter pattern is specifying which secrets to retrieve from the Key Vault. Supports wildcards (e.g., `*` for all secrets, `APP-*` for secrets starting with "APP-", or full names of secrets to be explicit).
 
 Example usage:
 ```yaml
 KeyVaultAzureSubscription: "MyAzureServiceConnection"
 KeyVaultName: "my-key-vault"
-KeyVaultSecretsFilter: "*"
+KeyVaultSecretsFilter: "TERRAFORM-TENANT-ID,TERRAFORM-CLIENT-ID,TERRAFORM-CLIENT-SECRET,TERRAFORM-SUBSCRIPTION-ID,TERRAFORM-ACCESS-KEY"
 ```
 
 The retrieved secrets will be available as environment variables in both the plan and apply jobs.

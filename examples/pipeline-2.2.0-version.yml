@@ -56,4 +56,4 @@ stages:
             ARM_SUBSCRIPTION_ID: $(TERRAFORM-SUBSCRIPTION-ID)
           KeyVaultName: aExampleKeyVault
           KeyVaultAzureConnection: azureConnectionToKeyVault
-          KeyVaultSecretsFilter: "*"
+          KeyVaultSecretsFilter: "TERRAFORM-TENANT-ID,TERRAFORM-CLIENT-ID,TERRAFORM-CLIENT-SECRET,TERRAFORM-SUBSCRIPTION-ID,TERRAFORM-ACCESS-KEY"
