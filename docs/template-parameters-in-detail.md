@@ -9,17 +9,17 @@ Consult the table below for information regarding the parameters. Hyperlinks lea
 | TFStateStorageAccountName                                                   | Yes      | string | Terraform state storage account                                                                                                                                                                                                                                            |
 | TFStateContainerName                                                        | Yes      | string | Terraform state container                                                                                                                                                                                                                                                  |
 | TFStateBlobName                                                             | Yes      | string | Terraform state blob                                                                                                                                                                                                                                                       |
-| [TerraformWorkspace](#TerraformWorkspace)                                   | No      | string | Terraform workspace                                                                                                                                                                                                                                                        |
-| [RunMode](#RunMode)                           | No      | string | Controls the behaviour of the template.                                                                                                                                                                                                                                                     |
+| [TerraformWorkspace](#TerraformWorkspace)                                   | No       | string | Terraform workspace                                                                                                                                                                                                                                                        |
+| [RunMode](#RunMode)                                                         | No       | string | Controls the behaviour of the template.                                                                                                                                                                                                                                    |
 | [TerraformArtifact](#TerraformArtifact)                                     | Yes      | string | Artifact containing your .tf files and any other supporting files for your deployment                                                                                                                                                                                      |
 | [TerraformArtifactConfigRelativePath](#TerraformArtifactConfigRelativePath) | Yes      | string | Relative path to the .tf files inside your artifact                                                                                                                                                                                                                        |
 | [JobsVariableMappings](#JobsVariableMappings)                               | No       | object | A key/value map of variables to be added to the templates jobs. Each key/value pair can either be: a normal variable, a variable group, or a variable template. Current limitation is that there can only be 1 group and 1 template defined otherwise it is duplicate key. |
 | [TerraformVariableMappings](#TerraformVariableMappings)                     | Yes      | object | A key/value map of Terraform variables to be injected into the PowerShell runtime environment for Terraform to use                                                                                                                                                         |
-| [TFVarFiles](#TFVarFiles)                                                   | No       | object | An array of relative paths for Terraform .tfvars variable files |
+| [TFVarFiles](#TFVarFiles)                                                   | No       | object | An array of relative paths for Terraform .tfvars variable files                                                                                                                                                                                                            |
 | [TerraformOutputVariables](#TerraformOutputVariables)                       | No       | object | An array of Terraform output variables to be retrieved after the Terraform apply has completed                                                                                                                                                                             |
-| [azureSubscription](#azureSubscription)                                     | Yes      | string | Azure subscription service connection name for Key Vault access                                                                                                                                                                                                           |
-| [keyVaultName](#keyVaultName)                                               | Yes      | string | Name of the Azure Key Vault containing secrets                                                                                                                                                                                                                            |
-| [secretsFilter](#secretsFilter)                                             | Yes      | string | Filter pattern for which secrets to retrieve from Key Vault                                                                                                                                                                                                               |
+| [KeyVaultAzureSubscription](#KeyVaultAzureSubscription)                     | No       | string | Azure subscription service connection name for Key Vault access                                                                                                                                                                                                            |
+| [KeyVaultName](#KeyVaultName)                                               | No       | string | Name of the Azure Key Vault containing secrets                                                                                                                                                                                                                             |
+| [KeyVaultSecretsFilter](#KeyVaultSecretsFilter)                             | No       | string | Filter pattern for which secrets to retrieve from Key Vault                                                                                                                                                                                                                |
 
 Parameters in detail:
 
@@ -102,7 +102,7 @@ Fairly common to have Terraform output variables that are values passed back out
 
 ## TFVarFiles
 
-This parameters allows you to supply TF Variable Files to the `terraform plan` and `terraform apply` commandline execution. Each file entry will be automatically formatted `"-var-file='$TFVarFile' "`.
+This parameter allows you to supply TF Variable Files to the `terraform plan` and `terraform apply` commandline execution. Each file entry will be automatically formatted `"-var-file='$TFVarFile' "`.
 
 Example:
 
@@ -114,23 +114,23 @@ Example:
 
 Will become `-var-file='config/common.tfvars' -var-file='config/stf.tfvars'` on the end of the `terraform plan` & `terraform apply`.
 
-## azureSubscription
+## KeyVaultAzureSubscription
 
-The name of the Azure DevOps service connection configured to access the Azure subscription containing the Key Vault.
+The name of the Azure DevOps service connection is configured to access the Azure subscription containing the Key Vault.
 
-## keyVaultName
+## KeyVaultName
 
 The name of the Azure Key Vault from which to retrieve secrets.
 
-## secretsFilter
+## KeyVaultSecretsFilter
 
-A filter pattern specifying which secrets to retrieve from the Key Vault. Supports wildcards (e.g., `*` for all secrets, `APP-*` for secrets starting with "APP-").
+A filter pattern is specifying which secrets to retrieve from the Key Vault. Supports wildcards (e.g., `*` for all secrets, `APP-*` for secrets starting with "APP-", or full names of secrets to be explicit).
 
 Example usage:
 ```yaml
-azureSubscription: "MyAzureServiceConnection"
-keyVaultName: "my-key-vault"
-secretsFilter: "*"
+KeyVaultAzureSubscription: "MyAzureServiceConnection"
+KeyVaultName: "my-key-vault"
+KeyVaultSecretsFilter: "TERRAFORM-TENANT-ID,TERRAFORM-CLIENT-ID,TERRAFORM-CLIENT-SECRET,TERRAFORM-SUBSCRIPTION-ID,TERRAFORM-ACCESS-KEY"
 ```
 
 The retrieved secrets will be available as environment variables in both the plan and apply jobs.

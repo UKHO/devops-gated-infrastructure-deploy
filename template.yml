@@ -31,11 +31,11 @@
   - name: TerraformContainer
     type: string
     default: ""
-  - name: azureSubscription
+  - name: KeyVaultAzureSubscription
     type: string
-  - name: keyVaultName
+  - name: KeyVaultName
     type: string
-  - name: secretsFilter
+  - name: KeyVaultSecretsFilter
     type: string
   - name: RunMode
     type: string
@@ -76,12 +76,12 @@ jobs:
               retryCountOnTaskFailure: '2'
               displayName: 'Download terraform artifact'
 
-          # Fetch Key Vault secrets into the job environment
-            - template: templates/include-kv.yml
-              parameters:
-                azureSubscription: ${{ parameters.azureSubscription }}
-                keyVaultName: ${{ parameters.keyVaultName }}
-                secretsFilter: ${{ parameters.secretsFilter }}    
+            - ${{ if and(parameters.KeyVaultAzureSubscription, parameters.KeyVaultName, parameters.KeyVaultSecretsFilter) }}:
+                - template: templates/include-kv.yml
+                  parameters:
+                    AzureSubscription: ${{ parameters.KeyVaultAzureSubscription }}
+                    KeyVaultName: ${{ parameters.KeyVaultName }}
+                    SecretsFilter: ${{ parameters.KeyVaultSecretsFilter }}
 
             - task: PowerShell@2
               name: plan
@@ -151,13 +151,13 @@ jobs:
                 retryCountOnTaskFailure: '2'
                 displayName: 'Download terraform artifact'
 
-              # Fetch Key Vault secrets into the job environment
-              - template: templates/include-kv.yml
-                parameters:
-                  azureSubscription: ${{ parameters.azureSubscription }}
-                  keyVaultName: ${{ parameters.keyVaultName }}
-                  secretsFilter: ${{ parameters.secretsFilter }}
-
+              - ${{ if and(parameters.KeyVaultAzureSubscription, parameters.KeyVaultName, parameters.KeyVaultSecretsFilter) }}:
+                  - template: templates/include-kv.yml
+                    parameters:
+                      AzureSubscription: ${{ parameters.KeyVaultAzureSubscription }}
+                      KeyVaultName: ${{ parameters.KeyVaultName }}
+                      SecretsFilter: ${{ parameters.KeyVaultSecretsFilter }}
+                  
               - task: PowerShell@2
                 displayName: "Terraform Apply"
                 name: deployment
