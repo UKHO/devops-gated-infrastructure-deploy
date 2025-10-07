@@ -1,5 +1,13 @@
 ﻿# Changelog
 
+## [2.2.0] - 2025-10-06
+
+Introduces feature for pulling secrets from key vault
+
+- Added parameters for specifying key vault name, service connection, and secret filter (@Shedman)
+- Added template for AzureKeyVault@2 task (@Shedman)
+- Uses new feature in planInfrastructure and deployInfrastructure jobs (@Shedman)
+
 ## [2.1.0] - 2025-06-21
 
 Improvements for increased manual verification flexiblity and modes.

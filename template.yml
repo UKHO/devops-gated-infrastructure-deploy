@@ -31,6 +31,12 @@
   - name: TerraformContainer
     type: string
     default: ""
+  - name: KeyVaultAzureSubscription
+    type: string
+  - name: KeyVaultName
+    type: string
+  - name: KeyVaultSecretsFilter
+    type: string
   - name: RunMode
     type: string
     default: RunMode
@@ -69,6 +75,13 @@ jobs:
               artifact: "${{parameters.TerraformArtifact}}"
               retryCountOnTaskFailure: '2'
               displayName: 'Download terraform artifact'
+
+            - ${{ if and(parameters.KeyVaultAzureSubscription, parameters.KeyVaultName, parameters.KeyVaultSecretsFilter) }}:
+                - template: templates/include-kv.yml
+                  parameters:
+                    AzureSubscription: ${{ parameters.KeyVaultAzureSubscription }}
+                    KeyVaultName: ${{ parameters.KeyVaultName }}
+                    SecretsFilter: ${{ parameters.KeyVaultSecretsFilter }}
 
             - task: PowerShell@2
               name: plan
@@ -138,6 +151,13 @@ jobs:
                 retryCountOnTaskFailure: '2'
                 displayName: 'Download terraform artifact'
 
+              - ${{ if and(parameters.KeyVaultAzureSubscription, parameters.KeyVaultName, parameters.KeyVaultSecretsFilter) }}:
+                  - template: templates/include-kv.yml
+                    parameters:
+                      AzureSubscription: ${{ parameters.KeyVaultAzureSubscription }}
+                      KeyVaultName: ${{ parameters.KeyVaultName }}
+                      SecretsFilter: ${{ parameters.KeyVaultSecretsFilter }}
+                  
               - task: PowerShell@2
                 displayName: "Terraform Apply"
                 name: deployment
