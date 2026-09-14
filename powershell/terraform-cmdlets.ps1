@@ -136,9 +136,11 @@ function ExportRequiredTerraformOutputVariables {
     [string] $TerraformOutputVariables
   )
 
-  if (![string]::IsNullOrEmpty($TerraformOutputVariables)) {
+  $outputVariables = GetTokens -Value $TerraformOutputVariables
+
+  if ($outputVariables.Count -gt 0) {
     Write-Output "Exporting required variables for deployment"
-    foreach ($terraformOutputVariable in $TerraformOutputVariables -split " ") {
+    foreach ($terraformOutputVariable in $outputVariables) {
       $activity = "Exporting '$terraformOutputVariable' variable from terraform output."
 
       Write-Host $activity
@@ -211,16 +213,37 @@ function SetRunApplyAndNeedsManualVerification {
 
 function GetTFVarFileArgs {
   param (
-    [Parameter(Mandatory)]
     [string] $TFVarFiles
   )
 
   $tfVarFileArgs = ''
 
-  foreach ($TFVarFile in $TFVarFiles -split " ")
+  foreach ($TFVarFile in (GetTokens -Value $TFVarFiles))
   {
       $tfVarFileArgs += "-var-file='$TFVarFile' "
   }
 
   return $tfVarFileArgs
+}
+
+# Values arrive as convertToJson output via env vars, but may still be plain space-separated text when passed as script arguments.
+function GetTokens {
+  param (
+    [string] $Value
+  )
+
+  if ([string]::IsNullOrWhiteSpace($Value)) { return @() }
+
+  try {
+    $parsed = $Value | ConvertFrom-Json -ErrorAction Stop
+
+    if ($parsed -is [string]) { $items = @($parsed) }
+    elseif ($parsed -is [System.Collections.IEnumerable]) { $items = @($parsed | ForEach-Object { [string]$_ }) }
+    else { $items = @() } # empty object default, i.e. '{}'
+  }
+  catch {
+    $items = @($Value)
+  }
+
+  return @($items | ForEach-Object { $_ -split '\s+' } | Where-Object { $_ -ne '' })
 }

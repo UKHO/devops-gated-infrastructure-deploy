@@ -26,9 +26,9 @@ param (
 
   [string] $Workspace,
 
-  [string] $TerraformOutputVariables,
+  [string] $TerraformOutputVariables = $env:GATED_DEPLOY_TERRAFORM_OUTPUT_VARIABLES,
 
-  [string] $TFVarFiles
+  [string] $TFVarFiles = $env:GATED_DEPLOY_TFVAR_FILES
 )
 
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")

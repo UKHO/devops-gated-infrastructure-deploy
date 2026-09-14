@@ -30,7 +30,7 @@ param (
 
     [string] $Workspace,
 
-    [string] $TFVarFiles
+    [string] $TFVarFiles = $env:GATED_DEPLOY_TFVAR_FILES
 )
 
 . $(Join-Path $PSScriptRoot "terraform-cmdlets.ps1")

@@ -1,5 +1,13 @@
 ﻿# Changelog
 
+## [2.2.1] - 2026-09-14
+
+Fixes the "Detected characters in arguments that may not be executed correctly by the shell" failure (aka.ms/ado/75787) introduced by the Azure Pipelines shell tasks arguments validation.
+
+- Moved `TFVarFiles` and `TerraformOutputVariables` out of the task `arguments` input and into `env` for the Terraform Plan and Terraform Apply tasks, as their `convertToJson` output contains characters the validation rejects (@richl-ukho)
+- `terraform-plan.ps1` / `terraform-apply.ps1` now default those parameters from `GATED_DEPLOY_TFVAR_FILES` / `GATED_DEPLOY_TERRAFORM_OUTPUT_VARIABLES` (@richl-ukho)
+- Values are now parsed as JSON, which also fixes an empty `TerraformOutputVariables` (`{}`) being treated as a variable named `{}` to export (@richl-ukho)
+
 ## [2.2.0] - 2025-10-06
 
 Introduces feature for pulling secrets from key vault
