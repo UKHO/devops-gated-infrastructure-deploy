@@ -97,9 +97,11 @@ jobs:
                   -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
                   -RunMode "${{parameters.RunMode}}"
                   -Workspace "${{lower(parameters.TerraformWorkspace)}}"
-                  -TFVarFiles ${{convertToJson(parameters.TFVarFiles)}}
                 failOnStderr: true 
               env:
+                # Passed via env rather than arguments: shell argument validation (aka.ms/ado/75787) rejects the JSON braces/brackets.
+                # Single-quoted so an empty '{}' stays a string rather than parsing as a YAML mapping.
+                GATED_DEPLOY_TFVAR_FILES: '${{convertToJson(parameters.TFVarFiles)}}'
                 ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
                   ${{TerraformVariableMappings.Key}}: ${{TerraformVariableMappings.Value}}
 
@@ -171,9 +173,11 @@ jobs:
                     -TFStateBlobName ${{parameters.TFStateBlobName}}
                     -TerraformFilesDirectory "$(Pipeline.Workspace)/${{parameters.TerraformArtifact}}${{parameters.TerraformArtifactConfigRelativePath}}"
                     -Workspace '${{lower(parameters.TerraformWorkspace)}}'
-                    -TerraformOutputVariables ${{convertToJson(parameters.TerraformOutputVariables)}}
-                    -TFVarFiles ${{convertToJson(parameters.TFVarFiles)}}
                   failOnStderr: true
                 env:
+                  # Passed via env rather than arguments: shell argument validation (aka.ms/ado/75787) rejects the JSON braces/brackets.
+                  # Single-quoted so an empty '{}' stays a string rather than parsing as a YAML mapping.
+                  GATED_DEPLOY_TFVAR_FILES: '${{convertToJson(parameters.TFVarFiles)}}'
+                  GATED_DEPLOY_TERRAFORM_OUTPUT_VARIABLES: '${{convertToJson(parameters.TerraformOutputVariables)}}'
                   ${{each TerraformVariableMappings in parameters.TerraformVariableMappings}}:
                     ${{TerraformVariableMappings.Key}}: ${{TerraformVariableMappings.Value}}
